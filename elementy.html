@@ -32,6 +32,12 @@ h1 {
     box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
 
+.element img {
+    width: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 button {
     margin-top: 10px;
     padding: 8px 15px;
@@ -73,46 +79,52 @@ function pokazInfo(id) {
 
 <div class="element">
 <h3>Rezystor</h3>
+<img src="rezystorfoto.png" alt="Rezystor">
 <button onclick="pokazInfo('r1')">Info</button>
 <p id="r1" class="info">
-Rezystor to element elektroniczny, który ogranicza przepływ prądu w obwodzie, stawiając mu opór (rezystancję). Może zmniejszać napięcie i chronić inne elementy.
+Rezystor to element elektroniczny, który ogranicza przepływ prądu w obwodzie.
 </p>
 </div>
 
 <div class="element">
 <h3>Kondensator</h3>
+<img src="kondensator.png" alt="Kondensator">
 <button onclick="pokazInfo('r2')">Info</button>
 <p id="r2" class="info">
-Kondensator magazynuje energię elektryczną w polu elektrycznym. Wygładza napięcie i filtruje zakłócenia.
+Kondensator magazynuje energię elektryczną.
 </p>
 </div>
 
 <div class="element">
 <h3>Dioda LED</h3>
+<img src="led.png" alt="LED">
 <button onclick="pokazInfo('r3')">Info</button>
 <p id="r3" class="info">
-Dioda LED emituje światło, gdy przepływa przez nią prąd. Jest energooszczędna i używana jako wskaźnik.
+Dioda LED emituje światło, gdy przepływa przez nią prąd.
 </p>
 </div>
 
 <div class="element">
 <h3>Wyświetlacz siedmiosegmentowy</h3>
+<img src="7segment.png" alt="7segment">
 <button onclick="pokazInfo('r4')">Info</button>
 <p id="r4" class="info">
-Wyświetlacz siedmiosegmentowy służy do wyświetlania cyfr za pomocą siedmiu segmentów LED.
+Wyświetlacz siedmiosegmentowy służy do wyświetlania cyfr.
 </p>
 </div>
 
 <div class="element">
 <h3>Klawiatura alfanumeryczna 4x4</h3>
+<img src="4x4klaw.png" alt="Klawiatura">
 <button onclick="pokazInfo('r5')">Info</button>
 <p id="r5" class="info">
-Klawiatura 4x4 pozwala wprowadzać cyfry i znaki do mikrokontrolera.
+Klawiatura 4x4 pozwala wprowadzać cyfry i znaki.
 </p>
 </div>
 
 <div class="element">
 <h3>Mikroswitch</h3>
+<img src="swtch.png" alt="Switch">
 <button onclick="pokazInfo('r6')">Info</button>
 <p id="r6" class="info">
 Mikroswitch to mały przełącznik reagujący na naciśnięcie.
@@ -121,73 +133,82 @@ Mikroswitch to mały przełącznik reagujący na naciśnięcie.
 
 <div class="element">
 <h3>Fotorezystor</h3>
+<img src="fotorez.png" alt="Fotorezystor">
 <button onclick="pokazInfo('r7')">Info</button>
 <p id="r7" class="info">
-Fotorezystor zmienia swoją rezystancję w zależności od natężenia światła.
+Fotorezystor zmienia rezystancję zależnie od światła.
 </p>
 </div>
 
 <div class="element">
 <h3>Przekaźnik</h3>
+<img src="relay.png" alt="Przekaźnik">
 <button onclick="pokazInfo('r8')">Info</button>
 <p id="r8" class="info">
-Przekaźnik to przełącznik sterowany elektrycznie, pozwala kontrolować większe napięcia.
+Przekaźnik to przełącznik sterowany elektrycznie.
 </p>
 </div>
 
 <div class="element">
 <h3>Silnik krokowy</h3>
+<img src="step motor.png" alt="Silnik krokowy">
 <button onclick="pokazInfo('r9')">Info</button>
 <p id="r9" class="info">
-Silnik krokowy obraca się o określony kąt (krok) po podaniu impulsu.
+Silnik krokowy obraca się o określony kąt.
 </p>
 </div>
 
 <div class="element">
 <h3>Servo SG-90</h3>
+<img src="serwo90.png" alt="Serwo">
 <button onclick="pokazInfo('r10')">Info</button>
 <p id="r10" class="info">
-Serwo SG-90 to mały silnik z kontrolą kąta obrotu, używany w robotyce.
+Serwo SG-90 to mały silnik z kontrolą kąta.
 </p>
 </div>
 
 <div class="element">
 <h3>Potencjometr</h3>
+<img src="potencjometr.png" alt="Potencjometr">
 <button onclick="pokazInfo('r11')">Info</button>
 <p id="r11" class="info">
-Potencjometr pozwala regulować opór i napięcie w obwodzie.
+Potencjometr pozwala regulować opór.
 </p>
 </div>
 
 <div class="element">
 <h3>Enkoder inkrementalny</h3>
+<img src="enkoder inkreme.png" alt="Enkoder">
 <button onclick="pokazInfo('r12')">Info</button>
 <p id="r12" class="info">
-Enkoder inkrementalny wykrywa obrót i kierunek ruchu.
+Enkoder wykrywa obrót i kierunek ruchu.
 </p>
 </div>
 
 <div class="element">
 <h3>Czujnik ultradźwiękowy</h3>
+<img src="ultraczuj.png" alt="Ultradźwiękowy">
 <button onclick="pokazInfo('r13')">Info</button>
 <p id="r13" class="info">
-Czujnik ultradźwiękowy mierzy odległość za pomocą fal dźwiękowych.
+Czujnik ultradźwiękowy mierzy odległość.
 </p>
 </div>
 
 <div class="element">
 <h3>Czujnik magnetyczny (kontaktron)</h3>
+<img src="czujniki magnet.png" alt="Kontaktron">
 <button onclick="pokazInfo('r14')">Info</button>
 <p id="r14" class="info">
-Kontaktron reaguje na pole magnetyczne i działa jak przełącznik.
+Kontaktron reaguje na pole magnetyczne.
 </p>
 </div>
 
 <div class="element">
 <h3>Wyświetlacz LCD</h3>
+<img src="lcd.png" alt="LCD">
 <button onclick="pokazInfo('r15')">Info</button>
 <p id="r15" class="info">
-Wyświetlacz LCD pokazuje tekst lub liczby i jest często używany z Arduino.
+Wyświetlacz LCD pokazuje tekst lub liczby.
 </p>
 </div>
 
