@@ -3,53 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <title>Operacje na ułamkach</title>
+
 <style>
+
 body{
-    font-family: Arial, sans-serif;
-    background:#e6ecef;
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#2f3b3b;
+    color:white;
     text-align:center;
 }
 
-h1{
-    color:#8b0000;
-    margin-top:20px;
+header{
+    background:#1f6f2f;
+    padding:20px;
+    font-size:32px;
+    font-weight:bold;
 }
 
 .container{
     display:flex;
+    flex-wrap:wrap;
     justify-content:center;
-    gap:40px;
-    margin-top:30px;
+    gap:30px;
+    padding:40px 20px;
 }
 
 .box{
-    background:#dbe3e8;
-    padding:20px;
+    background:#3d4b4b;
+    padding:25px;
     border-radius:15px;
-    width:350px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    width:320px;
+    box-shadow:0 0 15px rgba(0,0,0,0.4);
+}
+
+h2{
+    margin-top:0;
 }
 
 input{
     width:60px;
-    height:30px;
+    height:35px;
     text-align:center;
     font-size:18px;
+    border-radius:6px;
+    border:none;
 }
 
 button{
     margin-top:15px;
-    padding:8px 15px;
+    padding:10px 18px;
     font-size:16px;
-    background:green;
+    background:#1f6f2f;
     color:white;
     border:none;
     border-radius:8px;
     cursor:pointer;
+    transition:0.2s;
 }
 
 button:hover{
-    background:darkgreen;
+    background:#24943c;
+    transform:scale(1.05);
 }
 
 .fraction{
@@ -63,16 +78,33 @@ button:hover{
 }
 
 .line{
-    border-top:2px solid black;
+    border-top:2px solid white;
+    width:60px;
+    margin:auto;
 }
+
+.result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+@media(max-width:700px){
+    .container{
+        flex-direction:column;
+        align-items:center;
+    }
+}
+
 </style>
 </head>
 <body>
 
-<h1>Operacje na ułamkach</h1>
+<header>Operacje na ułamkach</header>
 
 <div class="container">
 
+<!-- SKRACANIE -->
 <div class="box">
 <h2>Skracanie</h2>
 
@@ -83,15 +115,16 @@ button:hover{
 <br>
 <button onclick="skroc()">Skróć</button>
 
-<p>Wynik:</p>
+<div class="result">
 <div class="fraction">
 <span id="wynikNum"></span>
 <span class="line"></span>
 <span id="wynikDen"></span>
 </div>
-
+</div>
 </div>
 
+<!-- DODAWANIE -->
 <div class="box">
 <h2>Dodawanie</h2>
 
@@ -110,46 +143,107 @@ button:hover{
 <br>
 <button onclick="dodaj()">Dodaj</button>
 
-<p>Wynik:</p>
+<div class="result">
 <div class="fraction">
 <span id="wynikNum2"></span>
 <span class="line"></span>
 <span id="wynikDen2"></span>
 </div>
+</div>
+</div>
 
+<!-- ODEJMOWANIE -->
+<div class="box">
+<h2>Odejmowanie</h2>
+
+<div class="fraction">
+<input id="e"><span class="line"></span>
+<input id="f">
+</div>
+
+-
+
+<div class="fraction">
+<input id="g"><span class="line"></span>
+<input id="h">
+</div>
+
+<br>
+<button onclick="odejmij()">Odejmij</button>
+
+<div class="result">
+<div class="fraction">
+<span id="wynikNum3"></span>
+<span class="line"></span>
+<span id="wynikDen3"></span>
+</div>
+</div>
 </div>
 
 </div>
 
 <script>
+
 function nwd(a,b){
+    a = Math.abs(a);
+    b = Math.abs(b);
     return b==0 ? a : nwd(b, a%b);
 }
 
+function sprawdzZero(den){
+    if(den==0){
+        alert("Nie można dzielić przez 0!");
+        return true;
+    }
+    return false;
+}
+
 function skroc(){
-    let num = parseInt(document.getElementById("num1").value);
-    let den = parseInt(document.getElementById("den1").value);
+    let num = parseInt(num1.value);
+    let den = parseInt(den1.value);
+
+    if(sprawdzZero(den)) return;
 
     let dz = nwd(num, den);
 
-    document.getElementById("wynikNum").innerText = num/dz;
-    document.getElementById("wynikDen").innerText = den/dz;
+    wynikNum.innerText = num/dz;
+    wynikDen.innerText = den/dz;
 }
 
 function dodaj(){
-    let a = parseInt(document.getElementById("a").value);
-    let b = parseInt(document.getElementById("b").value);
-    let c = parseInt(document.getElementById("c").value);
-    let d = parseInt(document.getElementById("d").value);
+    let a1 = parseInt(a.value);
+    let b1 = parseInt(b.value);
+    let c1 = parseInt(c.value);
+    let d1 = parseInt(d.value);
 
-    let num = a*d + c*b;
-    let den = b*d;
+    if(sprawdzZero(b1) || sprawdzZero(d1)) return;
+
+    let num = a1*d1 + c1*b1;
+    let den = b1*d1;
 
     let dz = nwd(num, den);
 
-    document.getElementById("wynikNum2").innerText = num/dz;
-    document.getElementById("wynikDen2").innerText = den/dz;
+    wynikNum2.innerText = num/dz;
+    wynikDen2.innerText = den/dz;
 }
+
+function odejmij(){
+    let e1 = parseInt(e.value);
+    let f1 = parseInt(f.value);
+    let g1 = parseInt(g.value);
+    let h1 = parseInt(h.value);
+
+    if(sprawdzZero(f1) || sprawdzZero(h1)) return;
+
+    let num = e1*h1 - g1*f1;
+    let den = f1*h1;
+
+    let dz = nwd(num, den);
+
+    wynikNum3.innerText = num/dz;
+    wynikDen3.innerText = den/dz;
+}
+
 </script>
 
 </body>
