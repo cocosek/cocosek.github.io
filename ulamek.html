@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Operacje na ułamkach</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#e6ecef;
+    text-align:center;
+}
+
+h1{
+    color:#8b0000;
+    margin-top:20px;
+}
+
+.container{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-top:30px;
+}
+
+.box{
+    background:#dbe3e8;
+    padding:20px;
+    border-radius:15px;
+    width:350px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+input{
+    width:60px;
+    height:30px;
+    text-align:center;
+    font-size:18px;
+}
+
+button{
+    margin-top:15px;
+    padding:8px 15px;
+    font-size:16px;
+    background:green;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:darkgreen;
+}
+
+.fraction{
+    display:inline-block;
+    text-align:center;
+    margin:5px;
+}
+
+.fraction span{
+    display:block;
+}
+
+.line{
+    border-top:2px solid black;
+}
+</style>
+</head>
+<body>
+
+<h1>Operacje na ułamkach</h1>
+
+<div class="container">
+
+<div class="box">
+<h2>Skracanie</h2>
+
+<div class="fraction">
+<input id="num1"><span class="line"></span>
+<input id="den1">
+</div>
+<br>
+<button onclick="skroc()">Skróć</button>
+
+<p>Wynik:</p>
+<div class="fraction">
+<span id="wynikNum"></span>
+<span class="line"></span>
+<span id="wynikDen"></span>
+</div>
+
+</div>
+
+<div class="box">
+<h2>Dodawanie</h2>
+
+<div class="fraction">
+<input id="a"><span class="line"></span>
+<input id="b">
+</div>
+
++
+
+<div class="fraction">
+<input id="c"><span class="line"></span>
+<input id="d">
+</div>
+
+<br>
+<button onclick="dodaj()">Dodaj</button>
+
+<p>Wynik:</p>
+<div class="fraction">
+<span id="wynikNum2"></span>
+<span class="line"></span>
+<span id="wynikDen2"></span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function nwd(a,b){
+    return b==0 ? a : nwd(b, a%b);
+}
+
+function skroc(){
+    let num = parseInt(document.getElementById("num1").value);
+    let den = parseInt(document.getElementById("den1").value);
+
+    let dz = nwd(num, den);
+
+    document.getElementById("wynikNum").innerText = num/dz;
+    document.getElementById("wynikDen").innerText = den/dz;
+}
+
+function dodaj(){
+    let a = parseInt(document.getElementById("a").value);
+    let b = parseInt(document.getElementById("b").value);
+    let c = parseInt(document.getElementById("c").value);
+    let d = parseInt(document.getElementById("d").value);
+
+    let num = a*d + c*b;
+    let den = b*d;
+
+    let dz = nwd(num, den);
+
+    document.getElementById("wynikNum2").innerText = num/dz;
+    document.getElementById("wynikDen2").innerText = den/dz;
+}
+</script>
+
+</body>
+</html>
