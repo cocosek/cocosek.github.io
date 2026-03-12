@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
 
+<head>
+<meta charset="UTF-8">
+<title>Kalkulator rezystorów 5 pasków</title>
+</head>
+
+<body>
+
+<h1>Kalkulator kodów rezystorów (5 pasków)</h1>
+
+<p>Wybierz kolory pasków:</p>
+
+<select id="p1">
+<option value="0">Czarny</option>
+<option value="1">Brązowy</option>
+<option value="2">Czerwony</option>
+<option value="3">Pomarańczowy</option>
+<option value="4">Żółty</option>
+<option value="5">Zielony</option>
+<option value="6">Niebieski</option>
+<option value="7">Fioletowy</option>
+<option value="8">Szary</option>
+<option value="9">Biały</option>
+</select>
+
+<select id="p2">
+<option value="0">Czarny</option>
+<option value="1">Brązowy</option>
+<option value="2">Czerwony</option>
+<option value="3">Pomarańczowy</option>
+<option value="4">Żółty</option>
+<option value="5">Zielony</option>
+<option value="6">Niebieski</option>
+<option value="7">Fioletowy</option>
+<option value="8">Szary</option>
+<option value="9">Biały</option>
+</select>
+
+<select id="p3">
+<option value="0">Czarny</option>
+<option value="1">Brązowy</option>
+<option value="2">Czerwony</option>
+<option value="3">Pomarańczowy</option>
+<option value="4">Żółty</option>
+<option value="5">Zielony</option>
+<option value="6">Niebieski</option>
+<option value="7">Fioletowy</option>
+<option value="8">Szary</option>
+<option value="9">Biały</option>
+</select>
+
+<select id="mult">
+<option value="1">x1</option>
+<option value="10">x10</option>
+<option value="100">x100</option>
+<option value="1000">x1000</option>
+</select>
+
+<button onclick="oblicz()">Oblicz</button>
+
+<h2 id="wynik"></h2>
+
+<script>
+
+function oblicz(){
+
+let a=parseInt(document.getElementById("p1").value);
+let b=parseInt(document.getElementById("p2").value);
+let c=parseInt(document.getElementById("p3").value);
+let m=parseInt(document.getElementById("mult").value);
+
+let wynik=(a*100 + b*10 + c) * m;
+
+document.getElementById("wynik").innerHTML =
+"Wartość rezystancji: "+wynik+" Ω";
+
+}
+
+</script>
+
+</body>
+</html>
