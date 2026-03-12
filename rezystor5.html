@@ -3,10 +3,56 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Kalkulator rezystorów 5 pasków</title>
+<title>Kalkulator kodów rezystorów (5 pasków)</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    margin:0;
+    padding:0;
+    text-align:center;
+}
+
+.container{
+    width:700px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+select{
+    padding:6px;
+    margin:5px;
+    font-size:14px;
+}
+
+button{
+    padding:8px 20px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+#wynik{
+    margin-top:25px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+</style>
+
 </head>
 
 <body>
+
+<div class="container">
 
 <h1>Kalkulator kodów rezystorów (5 pasków)</h1>
 
@@ -58,9 +104,13 @@
 <option value="1000">x1000</option>
 </select>
 
+<br><br>
+
 <button onclick="oblicz()">Oblicz</button>
 
 <h2 id="wynik"></h2>
+
+</div>
 
 <script src="rezystor5.js"></script>
 
