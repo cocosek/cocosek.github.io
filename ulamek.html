@@ -112,16 +112,13 @@ button:hover{
 <input id="num1"><span class="line"></span>
 <input id="den1">
 </div>
+
 <br>
+
 <button onclick="skroc()">Skróć</button>
 
-<div class="result">
-<div class="fraction">
-<span id="wynikNum"></span>
-<span class="line"></span>
-<span id="wynikDen"></span>
-</div>
-</div>
+<div class="result" id="wynikSkroc"></div>
+
 </div>
 
 <!-- DODAWANIE -->
@@ -141,15 +138,11 @@ button:hover{
 </div>
 
 <br>
+
 <button onclick="dodaj()">Dodaj</button>
 
-<div class="result">
-<div class="fraction">
-<span id="wynikNum2"></span>
-<span class="line"></span>
-<span id="wynikDen2"></span>
-</div>
-</div>
+<div class="result" id="wynikDodaj"></div>
+
 </div>
 
 <!-- ODEJMOWANIE -->
@@ -169,6 +162,7 @@ button:hover{
 </div>
 
 <br>
+
 <button onclick="odejmij()">Odejmij</button>
 
 <div class="result">
@@ -178,6 +172,7 @@ button:hover{
 <span id="wynikDen3"></span>
 </div>
 </div>
+
 </div>
 
 </div>
@@ -199,6 +194,7 @@ function sprawdzZero(den){
 }
 
 function skroc(){
+
     let num = parseInt(num1.value);
     let den = parseInt(den1.value);
 
@@ -206,11 +202,21 @@ function skroc(){
 
     let dz = nwd(num, den);
 
-    wynikNum.innerText = num/dz;
-    wynikDen.innerText = den/dz;
+    if(dz==1){
+        wynikSkroc.innerText = "Nie da się skrócić";
+        return;
+    }
+
+    wynikSkroc.innerHTML =
+    `<div class="fraction">
+        <span>${num/dz}</span>
+        <span class="line"></span>
+        <span>${den/dz}</span>
+    </div>`;
 }
 
 function dodaj(){
+
     let a1 = parseInt(a.value);
     let b1 = parseInt(b.value);
     let c1 = parseInt(c.value);
@@ -223,11 +229,41 @@ function dodaj(){
 
     let dz = nwd(num, den);
 
-    wynikNum2.innerText = num/dz;
-    wynikDen2.innerText = den/dz;
+    num/=dz;
+    den/=dz;
+
+    if(num>den){
+
+        let calosc = Math.floor(num/den);
+        let reszta = num % den;
+
+        if(reszta==0){
+            wynikDodaj.innerHTML = calosc;
+        }
+        else{
+            wynikDodaj.innerHTML =
+            `${calosc} 
+            <div class="fraction">
+                <span>${reszta}</span>
+                <span class="line"></span>
+                <span>${den}</span>
+            </div>`;
+        }
+
+    } else {
+
+        wynikDodaj.innerHTML =
+        `<div class="fraction">
+            <span>${num}</span>
+            <span class="line"></span>
+            <span>${den}</span>
+        </div>`;
+    }
+
 }
 
 function odejmij(){
+
     let e1 = parseInt(e.value);
     let f1 = parseInt(f.value);
     let g1 = parseInt(g.value);
