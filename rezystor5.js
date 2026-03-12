@@ -1,40 +1,13 @@
-let tab=[0,0,0,1,0];
+function oblicz(){
 
-function readValue1(){
-let a=document.getElementById("value1").value;
-tab[0]=parseInt(a);
-calculate();
-}
+let a = parseInt(document.getElementById("p1").value);
+let b = parseInt(document.getElementById("p2").value);
+let c = parseInt(document.getElementById("p3").value);
+let m = parseInt(document.getElementById("mult").value);
 
-function readValue2(){
-let a=document.getElementById("value2").value;
-tab[1]=parseInt(a);
-calculate();
-}
+let value = (a*100 + b*10 + c) * m;
 
-function readValue3(){
-let a=document.getElementById("value3").value;
-tab[2]=parseInt(a);
-calculate();
-}
-
-function readMultiplier(){
-let a=document.getElementById("multiplier").value;
-tab[3]=parseInt(a);
-calculate();
-}
-
-function readTolerance(){
-let a=document.getElementById("tolerance").value;
-tab[4]=parseInt(a);
-calculate();
-}
-
-function calculate(){
-
-let value=(tab[0]*100 + tab[1]*10 + tab[2]) * tab[3];
-
-document.getElementById("result").innerHTML =
-"Wartość rezystancji: "+value+" Ω ±"+tab[4]+"%";
+document.getElementById("wynik").innerHTML =
+"Wartość rezystancji: " + value + " Ω";
 
 }
