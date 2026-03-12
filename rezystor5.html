@@ -3,47 +3,66 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Kalkulator kodów rezystorów (5 pasków)</title>
+<title>Kalkulator kodów rezystorów</title>
 
 <style>
 
 body{
-    font-family: Arial, sans-serif;
-    background:#f2f2f2;
+    font-family: Arial;
+    background:#eaeaea;
     margin:0;
-    padding:0;
-    text-align:center;
-}
-
-.container{
-    width:700px;
-    margin:50px auto;
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
 }
 
 h1{
-    margin-bottom:20px;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    width:1000px;
+    margin:auto;
+    display:flex;
+    gap:30px;
+}
+
+.box{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    flex:1;
+    box-shadow:0 0 10px rgba(0,0,0,0.15);
 }
 
 select{
-    padding:6px;
+    padding:5px;
     margin:5px;
-    font-size:14px;
 }
 
 button{
-    padding:8px 20px;
-    font-size:14px;
-    cursor:pointer;
+    padding:8px 15px;
+    margin-top:10px;
 }
 
 #wynik{
-    margin-top:25px;
     font-size:22px;
+    margin-top:20px;
     font-weight:bold;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:20px;
+}
+
+td,th{
+    border:1px solid #ccc;
+    padding:5px;
+    text-align:center;
+}
+
+.color{
+    height:20px;
 }
 
 </style>
@@ -52,11 +71,81 @@ button{
 
 <body>
 
+<h1>Kalkulator kodów rezystorów</h1>
+
 <div class="container">
 
-<h1>Kalkulator kodów rezystorów (5 pasków)</h1>
+<!-- LEWA STRONA -->
+<div class="box">
 
-<p>Wybierz kolory pasków:</p>
+<h2>Kod czteropaskowy</h2>
+
+<table>
+<tr>
+<th>Kolor</th>
+<th>Cyfra</th>
+</tr>
+
+<tr>
+<td class="color" style="background:black"></td>
+<td>0</td>
+</tr>
+
+<tr>
+<td class="color" style="background:brown"></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td class="color" style="background:red"></td>
+<td>2</td>
+</tr>
+
+<tr>
+<td class="color" style="background:orange"></td>
+<td>3</td>
+</tr>
+
+<tr>
+<td class="color" style="background:yellow"></td>
+<td>4</td>
+</tr>
+
+<tr>
+<td class="color" style="background:green"></td>
+<td>5</td>
+</tr>
+
+<tr>
+<td class="color" style="background:blue"></td>
+<td>6</td>
+</tr>
+
+<tr>
+<td class="color" style="background:violet"></td>
+<td>7</td>
+</tr>
+
+<tr>
+<td class="color" style="background:gray"></td>
+<td>8</td>
+</tr>
+
+<tr>
+<td class="color" style="background:white"></td>
+<td>9</td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- PRAWA STRONA -->
+<div class="box">
+
+<h2>Kalkulator (5 pasków)</h2>
+
+<p>Wybierz kolory:</p>
 
 <select id="p1">
 <option value="0">Czarny</option>
@@ -104,11 +193,13 @@ button{
 <option value="1000">x1000</option>
 </select>
 
-<br><br>
+<br>
 
 <button onclick="oblicz()">Oblicz</button>
 
-<h2 id="wynik"></h2>
+<div id="wynik"></div>
+
+</div>
 
 </div>
 
