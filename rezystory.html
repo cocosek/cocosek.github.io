@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Kalkulator rezystora (5 pasków)</title>
+<title>Kalkulator rezystorów</title>
 
 <style>
 body{
@@ -12,14 +12,25 @@ body{
   text-align:center;
 }
 
-h1{ margin-top:20px; }
+.container{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+}
+
+.box{
+  background:#3d4b4b;
+  padding:20px;
+  border-radius:15px;
+}
 
 .resistor{
-  width:500px;
-  height:120px;
+  width:400px;
+  height:100px;
   background:#d9c69a;
   border-radius:30px;
-  margin:40px auto;
+  margin:20px auto;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -27,19 +38,19 @@ h1{ margin-top:20px; }
 }
 
 .wire{
-  width:200px;
-  height:8px;
+  width:150px;
+  height:6px;
   background:black;
   position:absolute;
   top:50%;
 }
-.wire.left{ left:-200px; }
-.wire.right{ right:-200px; }
+.wire.left{ left:-150px; }
+.wire.right{ right:-150px; }
 
 .band{
-  width:20px;
-  height:100px;
-  margin:0 6px;
+  width:18px;
+  height:80px;
+  margin:0 5px;
   border:2px solid black;
   cursor:pointer;
 }
@@ -63,126 +74,165 @@ h1{ margin-top:20px; }
 }
 
 .result{
-  font-size:26px;
-  margin-top:20px;
-  font-weight:bold;
+  font-size:22px;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Kalkulator kodu paskowego (5 pasków)</h1>
+<h1>Kalkulator kodów rezystorów</h1>
 
-<div class="resistor">
-  <div class="wire left"></div>
+<div class="container">
 
-  <div class="band" data-index="0"></div>
-  <div class="band" data-index="1"></div>
-  <div class="band" data-index="2"></div>
-  <div class="band" data-index="3"></div>
-  <div class="band" data-index="4"></div>
+<!-- ===== 5 PASKÓW ===== -->
+<div class="box">
+<h2>5 pasków</h2>
 
-  <div class="wire right"></div>
+<div class="resistor" id="res5">
+<div class="wire left"></div>
+
+<div class="band" data-i="0"></div>
+<div class="band" data-i="1"></div>
+<div class="band" data-i="2"></div>
+<div class="band" data-i="3"></div>
+<div class="band" data-i="4"></div>
+
+<div class="wire right"></div>
+</div>
+
+<div class="result" id="res5out"></div>
+</div>
+
+<!-- ===== 4 PASKI ===== -->
+<div class="box">
+<h2>4 paski</h2>
+
+<div class="resistor" id="res4">
+<div class="wire left"></div>
+
+<div class="band" data-i="0"></div>
+<div class="band" data-i="1"></div>
+<div class="band" data-i="2"></div>
+<div class="band" data-i="3"></div>
+
+<div class="wire right"></div>
+</div>
+
+<div class="result" id="res4out"></div>
+</div>
+
 </div>
 
 <div class="dropdown" id="dropdown"></div>
 
-<div class="result" id="result">Rezystancja: 0 Ω</div>
-
 <script>
 
-// cyfry
-const digitColors = [
-  {name:'czarny', value:0, color:'#000'},
-  {name:'brązowy', value:1, color:'#8B4513'},
-  {name:'czerwony', value:2, color:'red'},
-  {name:'pomarańczowy', value:3, color:'orange'},
-  {name:'żółty', value:4, color:'yellow'},
-  {name:'zielony', value:5, color:'green'},
-  {name:'niebieski', value:6, color:'blue'},
-  {name:'fioletowy', value:7, color:'purple'},
-  {name:'szary', value:8, color:'gray'},
-  {name:'biały', value:9, color:'white'}
+// ===== KOLORY =====
+const digits = [
+  {n:'czarny',v:0,c:'#000'},
+  {n:'brązowy',v:1,c:'#8B4513'},
+  {n:'czerwony',v:2,c:'red'},
+  {n:'pomarańczowy',v:3,c:'orange'},
+  {n:'żółty',v:4,c:'yellow'},
+  {n:'zielony',v:5,c:'green'},
+  {n:'niebieski',v:6,c:'blue'},
+  {n:'fioletowy',v:7,c:'purple'},
+  {n:'szary',v:8,c:'gray'},
+  {n:'biały',v:9,c:'white'}
 ];
 
-// mnożnik
-const multiplierColors = [
-  {name:'czarny', value:1, color:'#000'},
-  {name:'brązowy', value:10, color:'#8B4513'},
-  {name:'czerwony', value:100, color:'red'},
-  {name:'pomarańczowy', value:1000, color:'orange'},
-  {name:'żółty', value:10000, color:'yellow'},
-  {name:'zielony', value:100000, color:'green'},
-  {name:'niebieski', value:1000000, color:'blue'}
+const mult = [
+  {n:'czarny',v:1,c:'#000'},
+  {n:'brązowy',v:10,c:'#8B4513'},
+  {n:'czerwony',v:100,c:'red'},
+  {n:'pomarańczowy',v:1000,c:'orange'},
+  {n:'żółty',v:10000,c:'yellow'}
 ];
 
-// tolerancja
-const toleranceColors = [
-  {name:'brązowy', value:1, color:'#8B4513'},
-  {name:'czerwony', value:2, color:'red'},
-  {name:'złoty', value:5, color:'gold'},
-  {name:'srebrny', value:10, color:'silver'}
+const tol = [
+  {n:'brązowy',v:1,c:'#8B4513'},
+  {n:'czerwony',v:2,c:'red'},
+  {n:'złoty',v:5,c:'gold'},
+  {n:'srebrny',v:10,c:'silver'}
 ];
 
-let bands = [1,0,0,1,5]; // startowe
+// ===== 5 PASKÓW =====
+let b5=[1,0,0,1,5];
+const r5=document.querySelectorAll('#res5 .band');
 
-const bandElements = document.querySelectorAll('.band');
-const dropdown = document.getElementById('dropdown');
-
-function render(){
-  bandElements.forEach((el,i)=>{
-    let arr = (i<3) ? digitColors : (i==3 ? multiplierColors : toleranceColors);
-    let colorObj = arr.find(c=>c.value===bands[i]);
-    el.style.background = colorObj.color;
+function draw5(){
+  r5.forEach((el,i)=>{
+    let arr = (i<3)?digits:(i==3?mult:tol);
+    el.style.background = arr.find(x=>x.v===b5[i]).c;
   });
 
-  let value = (bands[0]*100 + bands[1]*10 + bands[2]) * bands[3];
-  let tol = bands[4];
-
-  document.getElementById("result").innerText =
-    `Rezystancja: ${value} Ω ±${tol}%`;
+  let val=(b5[0]*100+b5[1]*10+b5[2])*b5[3];
+  document.getElementById('res5out').innerText =
+    `Rezystancja: ${val} Ω ±${b5[4]}%`;
 }
 
-bandElements.forEach(el=>{
-  el.onclick = (e)=>{
-    let index = parseInt(el.dataset.index);
-    showDropdown(e.target,index);
-  };
-});
+// ===== 4 PASKI =====
+let b4=[1,0,1,5];
+const r4=document.querySelectorAll('#res4 .band');
 
-function showDropdown(target,index){
+function draw4(){
+  r4.forEach((el,i)=>{
+    let arr = (i<2)?digits:(i==2?mult:tol);
+    el.style.background = arr.find(x=>x.v===b4[i]).c;
+  });
 
-  dropdown.innerHTML = "";
+  let val=(b4[0]*10+b4[1])*b4[2];
+  document.getElementById('res4out').innerText =
+    `Rezystancja: ${val} Ω ±${b4[3]}%`;
+}
 
-  let arr = (index<3) ? digitColors : (index==3 ? multiplierColors : toleranceColors);
+// ===== DROPDOWN =====
+const dropdown=document.getElementById('dropdown');
+
+function openMenu(target,index,type){
+  dropdown.innerHTML="";
+
+  let arr;
+  if(type=="5") arr=(index<3)?digits:(index==3?mult:tol);
+  else arr=(index<2)?digits:(index==2?mult:tol);
 
   arr.forEach(c=>{
-    let div = document.createElement("div");
-    div.innerText = c.name;
+    let d=document.createElement("div");
+    d.innerText=c.n;
 
-    div.onclick = ()=>{
-      bands[index] = c.value;
-      dropdown.style.display = "none";
-      render();
+    d.onclick=()=>{
+      if(type=="5"){ b5[index]=c.v; draw5(); }
+      else{ b4[index]=c.v; draw4(); }
+
+      dropdown.style.display="none";
     };
 
-    dropdown.appendChild(div);
+    dropdown.appendChild(d);
   });
 
-  let rect = target.getBoundingClientRect();
-  dropdown.style.left = rect.left + "px";
-  dropdown.style.top = rect.bottom + window.scrollY + "px";
-  dropdown.style.display = "flex";
+  let r=target.getBoundingClientRect();
+  dropdown.style.left=r.left+"px";
+  dropdown.style.top=(r.bottom+window.scrollY)+"px";
+  dropdown.style.display="flex";
 }
 
-window.onclick = (e)=>{
-  if(!e.target.classList.contains("band")){
-    dropdown.style.display = "none";
-  }
+// kliknięcia
+r5.forEach(el=>{
+  el.onclick=e=>openMenu(e.target,el.dataset.i,"5");
+});
+r4.forEach(el=>{
+  el.onclick=e=>openMenu(e.target,el.dataset.i,"4");
+});
+
+window.onclick=e=>{
+  if(!e.target.classList.contains("band"))
+    dropdown.style.display="none";
 };
 
-render();
+draw5();
+draw4();
 
 </script>
 
