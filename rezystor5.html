@@ -1,209 +1,183 @@
 <!DOCTYPE html>
 <html lang="pl">
-
 <head>
 <meta charset="UTF-8">
-<title>Kalkulator kodów rezystorów</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator rezystora (5 pasków)</title>
 
 <style>
 
-body{
-    font-family: Arial;
-    background:#eaeaea;
-    margin:0;
+body {
+  font-family: Arial, sans-serif;
+  background: #2f3b3b;
+  color: white;
+  text-align: center;
 }
 
-h1{
-    text-align:center;
-    padding:20px;
+h1 { margin-top: 30px; }
+
+.resistor {
+  width: 500px;
+  height: 120px;
+  background: #d9c69a;
+  border-radius: 30px;
+  margin: 40px auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.container{
-    width:1000px;
-    margin:auto;
-    display:flex;
-    gap:30px;
+.wire {
+  width: 200px;
+  height: 8px;
+  background: gray;
+  position: absolute;
+  top: 50%;
 }
 
-.box{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    flex:1;
-    box-shadow:0 0 10px rgba(0,0,0,0.15);
+.wire.left { left: -200px; }
+.wire.right { right: -200px; }
+
+.band {
+  width: 20px;
+  height: 100px;
+  margin: 0 8px;
+  cursor: pointer;
+  border: 2px solid black; /* poprawka dla białego */
 }
 
-select{
-    padding:5px;
-    margin:5px;
+.dropdown {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  display: none;
+  flex-direction: column;
+  z-index: 10;
+  color:black;
 }
 
-button{
-    padding:8px 15px;
-    margin-top:10px;
+.dropdown div {
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
-#wynik{
-    font-size:22px;
-    margin-top:20px;
-    font-weight:bold;
+.dropdown div:hover {
+  background: #eee;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-bottom:20px;
-}
-
-td,th{
-    border:1px solid #ccc;
-    padding:5px;
-    text-align:center;
-}
-
-.color{
-    height:20px;
+.result {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<h1>Kalkulator kodów rezystorów</h1>
+<h1>Kalkulator kodu paskowego rezystora (5 pasków)</h1>
+<p>Kliknij pasek aby wybrać kolor</p>
 
-<div class="container">
+<div class="resistor">
+  <div class="wire left"></div>
 
-<!-- LEWA STRONA -->
-<div class="box">
+  <div class="band" data-index="0"></div>
+  <div class="band" data-index="1"></div>
+  <div class="band" data-index="2"></div>
+  <div class="band" data-index="3"></div>
+  <div class="band" data-index="4"></div>
 
-<h2>Kod czteropaskowy</h2>
-
-<table>
-<tr>
-<th>Kolor</th>
-<th>Cyfra</th>
-</tr>
-
-<tr>
-<td class="color" style="background:black"></td>
-<td>0</td>
-</tr>
-
-<tr>
-<td class="color" style="background:brown"></td>
-<td>1</td>
-</tr>
-
-<tr>
-<td class="color" style="background:red"></td>
-<td>2</td>
-</tr>
-
-<tr>
-<td class="color" style="background:orange"></td>
-<td>3</td>
-</tr>
-
-<tr>
-<td class="color" style="background:yellow"></td>
-<td>4</td>
-</tr>
-
-<tr>
-<td class="color" style="background:green"></td>
-<td>5</td>
-</tr>
-
-<tr>
-<td class="color" style="background:blue"></td>
-<td>6</td>
-</tr>
-
-<tr>
-<td class="color" style="background:violet"></td>
-<td>7</td>
-</tr>
-
-<tr>
-<td class="color" style="background:gray"></td>
-<td>8</td>
-</tr>
-
-<tr>
-<td class="color" style="background:white"></td>
-<td>9</td>
-</tr>
-
-</table>
-
+  <div class="wire right"></div>
 </div>
 
-<!-- PRAWA STRONA -->
-<div class="box">
+<div class="dropdown" id="dropdown"></div>
 
-<h2>Kalkulator (5 pasków)</h2>
+<div class="result" id="result">Rezystancja: 0 Ω</div>
 
-<p>Wybierz kolory:</p>
+<script>
 
-<select id="p1">
-<option value="0">Czarny</option>
-<option value="1">Brązowy</option>
-<option value="2">Czerwony</option>
-<option value="3">Pomarańczowy</option>
-<option value="4">Żółty</option>
-<option value="5">Zielony</option>
-<option value="6">Niebieski</option>
-<option value="7">Fioletowy</option>
-<option value="8">Szary</option>
-<option value="9">Biały</option>
-</select>
+// poprawione kolory
+const colors = [
+  {name:'czarny', value:0, color:'#000000'},
+  {name:'brązowy', value:1, color:'#8B4513'},
+  {name:'czerwony', value:2, color:'#FF0000'},
+  {name:'pomarańczowy', value:3, color:'#FF8C00'},
+  {name:'żółty', value:4, color:'#FFD700'},
+  {name:'zielony', value:5, color:'#008000'},
+  {name:'niebieski', value:6, color:'#0000FF'},
+  {name:'fioletowy', value:7, color:'#800080'},
+  {name:'szary', value:8, color:'#808080'},
+  {name:'biały', value:9, color:'#FFFFFF'}
+];
 
-<select id="p2">
-<option value="0">Czarny</option>
-<option value="1">Brązowy</option>
-<option value="2">Czerwony</option>
-<option value="3">Pomarańczowy</option>
-<option value="4">Żółty</option>
-<option value="5">Zielony</option>
-<option value="6">Niebieski</option>
-<option value="7">Fioletowy</option>
-<option value="8">Szary</option>
-<option value="9">Biały</option>
-</select>
+let bands = [1,0,0,1,0];
 
-<select id="p3">
-<option value="0">Czarny</option>
-<option value="1">Brązowy</option>
-<option value="2">Czerwony</option>
-<option value="3">Pomarańczowy</option>
-<option value="4">Żółty</option>
-<option value="5">Zielony</option>
-<option value="6">Niebieski</option>
-<option value="7">Fioletowy</option>
-<option value="8">Szary</option>
-<option value="9">Biały</option>
-</select>
+const bandElements = document.querySelectorAll('.band');
+const dropdown = document.getElementById('dropdown');
 
-<select id="mult">
-<option value="1">x1</option>
-<option value="10">x10</option>
-<option value="100">x100</option>
-<option value="1000">x1000</option>
-</select>
+function render() {
+  bandElements.forEach((el, i) => {
+    const colorObj = colors.find(c => c.value === bands[i]);
+    el.style.background = colorObj.color;
+  });
 
-<br>
+  let value = (bands[0]*100 + bands[1]*10 + bands[2]) * Math.pow(10, bands[3]);
 
-<button onclick="oblicz()">Oblicz</button>
+  let display;
 
-<div id="wynik"></div>
+  if(value >= 1000000){
+    display = (value/1000000) + " MΩ";
+  }
+  else if(value >= 1000){
+    display = (value/1000) + " kΩ";
+  }
+  else{
+    display = value + " Ω";
+  }
 
-</div>
+  document.getElementById('result').innerText = "Rezystancja: " + display;
+}
 
-</div>
+bandElements.forEach(el => {
+  el.addEventListener('click', (e) => {
+    const index = parseInt(el.dataset.index);
+    showDropdown(e.target, index);
+  });
+});
 
-<script src="rezystor5.js"></script>
+function showDropdown(target, index) {
+  dropdown.innerHTML = '';
+
+  colors.forEach(c => {
+    const item = document.createElement('div');
+    item.textContent = c.name;
+
+    item.onclick = () => {
+      bands[index] = c.value;
+      dropdown.style.display = 'none';
+      render();
+    };
+
+    dropdown.appendChild(item);
+  });
+
+  const rect = target.getBoundingClientRect();
+  dropdown.style.left = rect.left + 'px';
+  dropdown.style.top = (rect.bottom + window.scrollY) + 'px';
+  dropdown.style.display = 'flex';
+}
+
+window.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('band')) {
+    dropdown.style.display = 'none';
+  }
+});
+
+render();
+
+</script>
 
 </body>
 </html>
