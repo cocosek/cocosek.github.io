@@ -13,11 +13,10 @@ body{
 }
 
 .container{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  flex-wrap:wrap;
-}
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:80px; /* było za małe */
 
 .box{
   background:#3d4b4b;
@@ -43,13 +42,15 @@ img{
     align-items:center;
     position:relative;
     padding:0 20px;
+
+    overflow:hidden; /* 🔥 WAŻNE */
 }
   /* grupa lewych pasków */
 .bands-left{
     display:flex;
 }
 .wire{
-  width:150px;
+  width:100px; /* było 150 */
   height:6px;
   background:black;
   position:absolute;
