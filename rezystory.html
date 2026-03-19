@@ -86,7 +86,6 @@ img{
   margin-top:10px;
 }
 
-/* tabela */
 table{
   margin:auto;
   margin-top:40px;
@@ -173,7 +172,9 @@ const mult = [
   {n:'brązowy',v:10,c:'#8B4513'},
   {n:'czerwony',v:100,c:'red'},
   {n:'pomarańczowy',v:1000,c:'orange'},
-  {n:'żółty',v:10000,c:'yellow'}
+  {n:'żółty',v:10000,c:'yellow'},
+  {n:'zielony',v:100000,c:'green'},
+  {n:'niebieski',v:1000000,c:'blue'}
 ];
 
 const tol = [
@@ -190,6 +191,18 @@ const r5=document.querySelectorAll('#res5 .band');
 const r4=document.querySelectorAll('#res4 .band');
 const dropdown=document.getElementById('dropdown');
 
+function format(val){
+  if(val >= 1000000){
+    return (val/1000000).toString().replace('.',',') + " MΩ";
+  }
+  else if(val >= 1000){
+    return (val/1000).toString().replace('.',',') + " kΩ";
+  }
+  else{
+    return val + " Ω";
+  }
+}
+
 function draw5(){
   r5.forEach((el,i)=>{
     let arr = (i<3)?digits:(i==3?mult:tol);
@@ -197,8 +210,9 @@ function draw5(){
   });
 
   let val=(b5[0]*100+b5[1]*10+b5[2])*b5[3];
+
   document.getElementById('res5out').innerText =
-    `Rezystancja: ${val} Ω ±${b5[4]}%`;
+    `Rezystancja: ${format(val)} ±${b5[4]}%`;
 }
 
 function draw4(){
@@ -208,8 +222,9 @@ function draw4(){
   });
 
   let val=(b4[0]*10+b4[1])*b4[2];
+
   document.getElementById('res4out').innerText =
-    `Rezystancja: ${val} Ω ±${b4[3]}%`;
+    `Rezystancja: ${format(val)} ±${b4[3]}%`;
 }
 
 function openMenu(target,index,type){
@@ -255,7 +270,6 @@ draw4();
 
 </script>
 
-<!-- TABELA -->
 <h2>Tabela kodów rezystorów</h2>
 
 <table>
@@ -272,7 +286,7 @@ draw4();
 <tr style="background:blue;color:white;"><td>Niebieski</td><td>6</td><td>6</td><td>6</td><td>1MΩ</td><td>-</td></tr>
 <tr style="background:purple;color:white;"><td>Fioletowy</td><td>7</td><td>7</td><td>7</td><td>10MΩ</td><td>-</td></tr>
 <tr style="background:gray;"><td>Szary</td><td>8</td><td>8</td><td>8</td><td>100MΩ</td><td>-</td></tr>
-<tr style="background:white;"><td>Biały</td><td>9</td><td>9</td><td>9</td><td>-</td><td>-</td></tr>
+<tr style="background:white;"><td>Biały</td><td>9</td><td>9</td><td>9</td><td>1GΩ</td><td>-</td></tr>
 <tr style="background:gold;"><td>Złoty</td><td>-</td><td>-</td><td>-</td><td>0.1Ω</td><td>±5%</td></tr>
 <tr style="background:silver;"><td>Srebrny</td><td>-</td><td>-</td><td>-</td><td>0.01Ω</td><td>±10%</td></tr>
 </table>
