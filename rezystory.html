@@ -2,74 +2,73 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kalkulator rezystora (5 pasków)</title>
+<title>Kalkulator kodów rezystorów</title>
 
 <style>
 
-body {
-  font-family: Arial, sans-serif;
-  background: #2f3b3b;
-  color: white;
-  text-align: center;
+body{
+    margin:0;
+    font-family:Arial;
+    background:#2f3b3b;
+    color:white;
 }
 
-h1 { margin-top: 30px; }
-
-.resistor {
-  width: 500px;
-  height: 120px;
-  background: #d9c69a;
-  border-radius: 30px;
-  margin: 40px auto;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* HEADER */
+header{
+    background:#1f6f2f;
+    padding:20px;
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
 }
 
-.wire {
-  width: 200px;
-  height: 8px;
-  background: gray;
-  position: absolute;
-  top: 50%;
+/* OPIS */
+.opis{
+    padding:20px;
+    max-width:1000px;
+    margin:auto;
+    line-height:1.6;
 }
 
-.wire.left { left: -200px; }
-.wire.right { right: -200px; }
-
-.band {
-  width: 20px;
-  height: 100px;
-  margin: 0 8px;
-  cursor: pointer;
-  border: 2px solid black; /* poprawka dla białego */
+/* SEKCJA */
+.container{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding:20px;
 }
 
-.dropdown {
-  position: absolute;
-  background: white;
-  border: 1px solid #ccc;
-  display: none;
-  flex-direction: column;
-  z-index: 10;
-  color:black;
+/* BOX */
+.box{
+    background:#3d4b4b;
+    border-radius:15px;
+    padding:20px;
+    width:420px;
+    box-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
-.dropdown div {
-  padding: 5px 10px;
-  cursor: pointer;
+/* OBRAZEK */
+.box img{
+    width:100%;
+    border-radius:10px;
 }
 
-.dropdown div:hover {
-  background: #eee;
+/* TEKST */
+h2{
+    text-align:center;
 }
 
-.result {
-  font-size: 28px;
-  font-weight: bold;
-  margin-top: 20px;
+p{
+    text-align:center;
+}
+
+/* RESPONSYWNOŚĆ */
+@media(max-width:900px){
+    .container{
+        flex-direction:column;
+        align-items:center;
+    }
 }
 
 </style>
@@ -77,107 +76,65 @@ h1 { margin-top: 30px; }
 
 <body>
 
-<h1>Kalkulator kodu paskowego rezystora (5 pasków)</h1>
-<p>Kliknij pasek aby wybrać kolor</p>
+<header>Kalkulator kodów rezystorów</header>
 
-<div class="resistor">
-  <div class="wire left"></div>
+<div class="opis">
 
-  <div class="band" data-index="0"></div>
-  <div class="band" data-index="1"></div>
-  <div class="band" data-index="2"></div>
-  <div class="band" data-index="3"></div>
-  <div class="band" data-index="4"></div>
+<h2>Rezystory - kod paskowy</h2>
 
-  <div class="wire right"></div>
+<p>
+Podstawowymi parametrami opisującymi rezystory są:
+</p>
+
+<ul>
+<li>Rezystancja nominalna – wartość podawana przez producenta</li>
+<li>Tolerancja – dopuszczalne odchylenie w %</li>
+<li>Moc znamionowa – maksymalna moc rezystora</li>
+<li>Temperaturowy współczynnik rezystancji</li>
+</ul>
+
 </div>
 
-<div class="dropdown" id="dropdown"></div>
+<div class="container">
 
-<div class="result" id="result">Rezystancja: 0 Ω</div>
+<!-- 4 PASKI -->
+<div class="box">
 
-<script>
+<h2>Kod czteropaskowy</h2>
 
-// poprawione kolory
-const colors = [
-  {name:'czarny', value:0, color:'#000000'},
-  {name:'brązowy', value:1, color:'#8B4513'},
-  {name:'czerwony', value:2, color:'#FF0000'},
-  {name:'pomarańczowy', value:3, color:'#FF8C00'},
-  {name:'żółty', value:4, color:'#FFD700'},
-  {name:'zielony', value:5, color:'#008000'},
-  {name:'niebieski', value:6, color:'#0000FF'},
-  {name:'fioletowy', value:7, color:'#800080'},
-  {name:'szary', value:8, color:'#808080'},
-  {name:'biały', value:9, color:'#FFFFFF'}
-];
+<img src="4paski.png" alt="Rezystor 4 paski">
 
-let bands = [1,0,0,1,0];
+<p>
+Żółty = 4<br>
+Fioletowy = 7<br>
+Brązowy = x10<br>
+Srebrny = ±10%
+</p>
 
-const bandElements = document.querySelectorAll('.band');
-const dropdown = document.getElementById('dropdown');
+<p><b>Rezystancja = 47 × 10 = 470 Ω</b></p>
 
-function render() {
-  bandElements.forEach((el, i) => {
-    const colorObj = colors.find(c => c.value === bands[i]);
-    el.style.background = colorObj.color;
-  });
+</div>
 
-  let value = (bands[0]*100 + bands[1]*10 + bands[2]) * Math.pow(10, bands[3]);
+<!-- 5 PASKÓW -->
+<div class="box">
 
-  let display;
+<h2>Kod pięciopaskowy</h2>
 
-  if(value >= 1000000){
-    display = (value/1000000) + " MΩ";
-  }
-  else if(value >= 1000){
-    display = (value/1000) + " kΩ";
-  }
-  else{
-    display = value + " Ω";
-  }
+<img src="5paski.png" alt="Rezystor 5 pasków">
 
-  document.getElementById('result').innerText = "Rezystancja: " + display;
-}
+<p>
+Żółty = 4<br>
+Fioletowy = 7<br>
+Czarny = 0<br>
+Brązowy = x10<br>
+Srebrny = ±10%
+</p>
 
-bandElements.forEach(el => {
-  el.addEventListener('click', (e) => {
-    const index = parseInt(el.dataset.index);
-    showDropdown(e.target, index);
-  });
-});
+<p><b>Rezystancja = 470 × 10 = 4700 Ω = 4.7 kΩ</b></p>
 
-function showDropdown(target, index) {
-  dropdown.innerHTML = '';
+</div>
 
-  colors.forEach(c => {
-    const item = document.createElement('div');
-    item.textContent = c.name;
-
-    item.onclick = () => {
-      bands[index] = c.value;
-      dropdown.style.display = 'none';
-      render();
-    };
-
-    dropdown.appendChild(item);
-  });
-
-  const rect = target.getBoundingClientRect();
-  dropdown.style.left = rect.left + 'px';
-  dropdown.style.top = (rect.bottom + window.scrollY) + 'px';
-  dropdown.style.display = 'flex';
-}
-
-window.addEventListener('click', (e) => {
-  if (!e.target.classList.contains('band')) {
-    dropdown.style.display = 'none';
-  }
-});
-
-render();
-
-</script>
+</div>
 
 </body>
 </html>
