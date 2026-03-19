@@ -6,300 +6,282 @@
 
 <style>
 body{
-  background:#2f3b3b;
-  color:white;
-  font-family:Arial;
-  text-align:center;
+    font-family:Arial;
+    text-align:center;
+    background:#eee;
 }
 
-.container{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  flex-wrap:wrap;
-}
-
-.box{
-  background:#3d4b4b;
-  padding:20px;
-  border-radius:15px;
-  width:420px;
-}
-
-img{
-  width:300px;
-  margin:10px;
-  border-radius:10px;
-  box-shadow:0 0 15px black;
-}
-
+/* REZYSTOR */
 .resistor{
-  width:400px;
-  height:100px;
-  background:#d9c69a;
-  border-radius:30px;
-  margin:20px auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
+    width:500px;
+    height:120px;
+    background:#d9c69a;
+    border-radius:30px;
+    margin:40px auto;
+    display:flex;
+    align-items:center;
+    position:relative;
+    padding:0 20px;
 }
 
+/* DRUTY */
 .wire{
-  width:150px;
-  height:6px;
-  background:black;
-  position:absolute;
-  top:50%;
+    width:150px;
+    height:6px;
+    background:black;
+    position:absolute;
+    top:50%;
 }
-.wire.left{ left:-150px; }
-.wire.right{ right:-150px; }
 
+.left{ left:-150px; }
+.right{ right:-150px; }
+
+/* LEWE PASKI */
+.bands-left{
+    display:flex;
+}
+
+/* PASKI */
 .band{
-  width:18px;
-  height:80px;
-  margin:0 5px;
-  border:2px solid black;
-  cursor:pointer;
+    width:20px;
+    height:90px;
+    margin-right:10px;
+    border:1px solid black;
+    cursor:pointer;
 }
 
-/* OSTATNI PASEK DALEJ OD RESZTY */
-#res5 .band:last-child{
-  margin-left:30px;
+/* OSTATNI PASEK */
+.band.last{
+    margin-left:auto;
 }
 
-#res4 .band:last-child{
-  margin-left:30px;
-}
-}
-
+/* DROPDOWN */
 .dropdown{
-  position:absolute;
-  background:white;
-  color:black;
-  display:none;
-  flex-direction:column;
-  border:1px solid #ccc;
-  z-index:10;
+    position:absolute;
+    background:white;
+    border:1px solid black;
+    display:none;
+    flex-direction:column;
+    z-index:100;
 }
 
 .dropdown div{
-  padding:5px;
-  cursor:pointer;
+    padding:5px;
+    cursor:pointer;
 }
+
 .dropdown div:hover{
-  background:#eee;
+    background:#ddd;
 }
 
 .result{
-  font-size:22px;
-  margin-top:10px;
+    font-size:26px;
+    margin-top:10px;
+    font-weight:bold;
 }
 
-table{
-  margin:auto;
-  margin-top:40px;
-  border-collapse:collapse;
-  background:white;
-  color:black;
-}
-
-table td, table th{
-  border:1px solid black;
-  padding:6px 10px;
+.box{
+    margin-bottom:80px;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <h1>Kalkulator kodów rezystorów</h1>
 
-<div class="container">
+<!-- ===== 4 PASKI ===== -->
+<div class="box">
+<h2>Rezystor 4-paskowy</h2>
+
+<div class="resistor" id="res4">
+    <div class="wire left"></div>
+
+    <div class="bands-left">
+        <div class="band" data-i="0"></div>
+        <div class="band" data-i="1"></div>
+        <div class="band" data-i="2"></div>
+    </div>
+
+    <div class="band last" data-i="3"></div>
+
+    <div class="wire right"></div>
+</div>
+
+<div class="result" id="res4val"></div>
+</div>
+
 
 <!-- ===== 5 PASKÓW ===== -->
 <div class="box">
-<h2>5 pasków</h2>
-
-<img src="rezystor5paskow.png">
+<h2>Rezystor 5-paskowy</h2>
 
 <div class="resistor" id="res5">
-<div class="wire left"></div>
+    <div class="wire left"></div>
 
-<div class="band" data-i="0"></div>
-<div class="band" data-i="1"></div>
-<div class="band" data-i="2"></div>
-<div class="band" data-i="3"></div>
-<div class="band" data-i="4"></div>
+    <div class="bands-left">
+        <div class="band" data-i="0"></div>
+        <div class="band" data-i="1"></div>
+        <div class="band" data-i="2"></div>
+        <div class="band" data-i="3"></div>
+    </div>
 
-<div class="wire right"></div>
+    <div class="band last" data-i="4"></div>
+
+    <div class="wire right"></div>
 </div>
 
-<div class="result" id="res5out"></div>
+<div class="result" id="res5val"></div>
 </div>
 
-<!-- ===== 4 PASKI ===== -->
-<div class="box">
-<h2>4 paski</h2>
-
-<img src="rezystor4paski.png">
-
-<div class="resistor" id="res4">
-<div class="wire left"></div>
-
-<div class="band" data-i="0"></div>
-<div class="band" data-i="1"></div>
-<div class="band" data-i="2"></div>
-<div class="band" data-i="3"></div>
-
-<div class="wire right"></div>
-</div>
-
-<div class="result" id="res4out"></div>
-</div>
-
-</div>
 
 <div class="dropdown" id="dropdown"></div>
 
 <script>
 
-const digits = [
-  {n:'czarny',v:0,c:'#000'},
-  {n:'brązowy',v:1,c:'#8B4513'},
-  {n:'czerwony',v:2,c:'red'},
-  {n:'pomarańczowy',v:3,c:'orange'},
-  {n:'żółty',v:4,c:'yellow'},
-  {n:'zielony',v:5,c:'green'},
-  {n:'niebieski',v:6,c:'blue'},
-  {n:'fioletowy',v:7,c:'purple'},
-  {n:'szary',v:8,c:'gray'},
-  {n:'biały',v:9,c:'white'}
+const colors = [
+ {name:"Czarny", val:0, col:"black"},
+ {name:"Brązowy", val:1, col:"#8B4513"},
+ {name:"Czerwony", val:2, col:"red"},
+ {name:"Pomarańczowy", val:3, col:"orange"},
+ {name:"Żółty", val:4, col:"yellow"},
+ {name:"Zielony", val:5, col:"green"},
+ {name:"Niebieski", val:6, col:"blue"},
+ {name:"Fioletowy", val:7, col:"purple"},
+ {name:"Szary", val:8, col:"gray"},
+ {name:"Biały", val:9, col:"white"}
 ];
 
 const mult = [
-  {n:'czarny',v:1,c:'#000'},
-  {n:'brązowy',v:10,c:'#8B4513'},
-  {n:'czerwony',v:100,c:'red'},
-  {n:'pomarańczowy',v:1000,c:'orange'},
-  {n:'żółty',v:10000,c:'yellow'},
-  {n:'zielony',v:100000,c:'green'},
-  {n:'niebieski',v:1000000,c:'blue'}
+ {name:"x1", val:1},
+ {name:"x10", val:10},
+ {name:"x100", val:100},
+ {name:"x1k", val:1000},
+ {name:"x10k", val:10000},
+ {name:"x100k", val:100000},
+ {name:"x1M", val:1000000}
 ];
 
 const tol = [
-  {n:'brązowy',v:1,c:'#8B4513'},
-  {n:'czerwony',v:2,c:'red'},
-  {n:'złoty',v:5,c:'gold'},
-  {n:'srebrny',v:10,c:'silver'}
+ {name:"±1%", val:1, col:"#8B4513"},
+ {name:"±2%", val:2, col:"red"},
+ {name:"±5%", val:5, col:"gold"},
+ {name:"±10%", val:10, col:"silver"}
 ];
 
-let b5=[1,0,0,1,5];
-let b4=[1,0,1,5];
+let r4 = [1,0,1,5];
+let r5 = [1,0,0,1,5];
 
-const r5=document.querySelectorAll('#res5 .band');
-const r4=document.querySelectorAll('#res4 .band');
-const dropdown=document.getElementById('dropdown');
+const dropdown = document.getElementById("dropdown");
 
-function format(val){
-  if(val >= 1000000){
-    return (val/1000000).toString().replace('.',',') + " MΩ";
-  }
-  else if(val >= 1000){
-    return (val/1000).toString().replace('.',',') + " kΩ";
-  }
-  else{
-    return val + " Ω";
-  }
+function format(v){
+ if(v>=1000000) return (v/1000000)+" MΩ";
+ if(v>=1000) return (v/1000)+" kΩ";
+ return v+" Ω";
 }
 
-function draw5(){
-  r5.forEach((el,i)=>{
-    let arr = (i<3)?digits:(i==3?mult:tol);
-    el.style.background = arr.find(x=>x.v===b5[i]).c;
-  });
+function draw(){
 
-  let val=(b5[0]*100+b5[1]*10+b5[2])*b5[3];
+ // 4 paski
+ document.querySelectorAll("#res4 .band").forEach((b,i)=>{
+   if(i<2){
+     let c = colors.find(x=>x.val==r4[i]);
+     b.style.background=c.col;
+   }
+   else if(i==2){
+     b.style.background="orange";
+   }
+   else{
+     let t = tol.find(x=>x.val==r4[3]);
+     b.style.background=t.col;
+   }
+ });
 
-  document.getElementById('res5out').innerText =
-    `Rezystancja: ${format(val)} ±${b5[4]}%`;
+ let val4 = (r4[0]*10 + r4[1]) * 10;
+ document.getElementById("res4val").innerText =
+ format(val4) + " " + tol.find(x=>x.val==r4[3]).name;
+
+
+ // 5 pasków
+ document.querySelectorAll("#res5 .band").forEach((b,i)=>{
+   if(i<3){
+     let c = colors.find(x=>x.val==r5[i]);
+     b.style.background=c.col;
+   }
+   else if(i==3){
+     b.style.background="brown";
+   }
+   else{
+     let t = tol.find(x=>x.val==r5[4]);
+     b.style.background=t.col;
+   }
+ });
+
+ let val5 = (r5[0]*100 + r5[1]*10 + r5[2]) * 10;
+ document.getElementById("res5val").innerText =
+ format(val5) + " " + tol.find(x=>x.val==r5[4]).name;
 }
 
-function draw4(){
-  r4.forEach((el,i)=>{
-    let arr = (i<2)?digits:(i==2?mult:tol);
-    el.style.background = arr.find(x=>x.v===b4[i]).c;
-  });
 
-  let val=(b4[0]*10+b4[1])*b4[2];
+function show(el, type, index){
 
-  document.getElementById('res4out').innerText =
-    `Rezystancja: ${format(val)} ±${b4[3]}%`;
+ dropdown.innerHTML="";
+
+ let list = colors;
+
+ if(type=="mult") list = mult;
+ if(type=="tol") list = tol;
+
+ list.forEach(item=>{
+   let d = document.createElement("div");
+   d.innerText = item.name;
+
+   d.onclick=()=>{
+     if(el.closest("#res4")){
+       if(type=="digit") r4[index]=item.val;
+       if(type=="tol") r4[3]=item.val;
+     } else {
+       if(type=="digit") r5[index]=item.val;
+       if(type=="tol") r5[4]=item.val;
+     }
+     dropdown.style.display="none";
+     draw();
+   };
+
+   dropdown.appendChild(d);
+ });
+
+ let r = el.getBoundingClientRect();
+ dropdown.style.left = r.left+"px";
+ dropdown.style.top = (r.bottom+window.scrollY)+"px";
+ dropdown.style.display="flex";
 }
 
-function openMenu(target,index,type){
-  dropdown.innerHTML="";
 
-  let arr;
-  if(type=="5") arr=(index<3)?digits:(index==3?mult:tol);
-  else arr=(index<2)?digits:(index==2?mult:tol);
+// kliknięcia
+document.querySelectorAll(".band").forEach(b=>{
+ b.onclick = (e)=>{
 
-  arr.forEach(c=>{
-    let d=document.createElement("div");
-    d.innerText=c.n;
+   let i = parseInt(b.dataset.i);
 
-    d.onclick=()=>{
-      if(type=="5"){ b5[index]=c.v; draw5(); }
-      else{ b4[index]=c.v; draw4(); }
-      dropdown.style.display="none";
-    };
+   if(b.closest("#res4")){
+     if(i<2) show(b,"digit",i);
+     else if(i==3) show(b,"tol",i);
+   }
+   else{
+     if(i<3) show(b,"digit",i);
+     else if(i==4) show(b,"tol",i);
+   }
 
-    dropdown.appendChild(d);
-  });
-
-  let r=target.getBoundingClientRect();
-  dropdown.style.left=r.left+"px";
-  dropdown.style.top=(r.bottom+window.scrollY)+"px";
-  dropdown.style.display="flex";
-}
-
-r5.forEach(el=>{
-  el.onclick=e=>openMenu(e.target,el.dataset.i,"5");
+   e.stopPropagation();
+ };
 });
-r4.forEach(el=>{
-  el.onclick=e=>openMenu(e.target,el.dataset.i,"4");
-});
 
-window.onclick=e=>{
-  if(!e.target.classList.contains("band"))
-    dropdown.style.display="none";
-};
+window.onclick = ()=> dropdown.style.display="none";
 
-draw5();
-draw4();
+draw();
 
 </script>
-
-<h2>Tabela kodów rezystorów</h2>
-
-<table>
-<tr>
-<th>Kolor</th><th>1</th><th>2</th><th>3</th><th>Mnożnik</th><th>Tolerancja</th>
-</tr>
-
-<tr style="background:black;color:white;"><td>Czarny</td><td>0</td><td>0</td><td>0</td><td>1Ω</td><td>-</td></tr>
-<tr style="background:brown;color:white;"><td>Brązowy</td><td>1</td><td>1</td><td>1</td><td>10Ω</td><td>±1%</td></tr>
-<tr style="background:red;"><td>Czerwony</td><td>2</td><td>2</td><td>2</td><td>100Ω</td><td>±2%</td></tr>
-<tr style="background:orange;"><td>Pomarańczowy</td><td>3</td><td>3</td><td>3</td><td>1kΩ</td><td>-</td></tr>
-<tr style="background:yellow;"><td>Żółty</td><td>4</td><td>4</td><td>4</td><td>10kΩ</td><td>-</td></tr>
-<tr style="background:green;"><td>Zielony</td><td>5</td><td>5</td><td>5</td><td>100kΩ</td><td>-</td></tr>
-<tr style="background:blue;color:white;"><td>Niebieski</td><td>6</td><td>6</td><td>6</td><td>1MΩ</td><td>-</td></tr>
-<tr style="background:purple;color:white;"><td>Fioletowy</td><td>7</td><td>7</td><td>7</td><td>10MΩ</td><td>-</td></tr>
-<tr style="background:gray;"><td>Szary</td><td>8</td><td>8</td><td>8</td><td>100MΩ</td><td>-</td></tr>
-<tr style="background:white;"><td>Biały</td><td>9</td><td>9</td><td>9</td><td>1GΩ</td><td>-</td></tr>
-<tr style="background:gold;"><td>Złoty</td><td>-</td><td>-</td><td>-</td><td>0.1Ω</td><td>±5%</td></tr>
-<tr style="background:silver;"><td>Srebrny</td><td>-</td><td>-</td><td>-</td><td>0.01Ω</td><td>±10%</td></tr>
-</table>
 
 </body>
 </html>
