@@ -17,7 +17,7 @@ body{
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
-    gap:120px; /* 🔥 większy odstęp */
+    gap:120px;
     margin-top:30px;
 }
 
@@ -40,7 +40,7 @@ img{
 /* REZYSTOR */
 .resistor{
     width:100%;
-    max-width:360px; /* 🔥 mniejszy */
+    max-width:360px;
     height:120px;
     background:#d9c69a;
     border-radius:30px;
@@ -51,7 +51,7 @@ img{
     padding:0 30px;
 }
 
-/* LEWE PASKI */
+/* PASKI */
 .bands-left{
     display:flex;
     gap:10px;
@@ -59,7 +59,7 @@ img{
 
 /* DRUTY */
 .wire{
-  width:50px; /* 🔥 krótsze */
+  width:50px;
   height:6px;
   background:black;
   position:absolute;
@@ -101,12 +101,18 @@ img{
   background:#eee;
 }
 
+/* WYNIK */
 .result{
   font-size:22px;
   margin-top:10px;
+  line-height:1.6;
 }
 
 /* TABELA */
+h2{
+  margin-top:50px;
+}
+
 table{
   margin:20px auto;
   border-collapse:collapse;
@@ -134,7 +140,6 @@ table td, table th{
 <img src="rezystor5paskow.png">
 
 <div class="resistor" id="res5">
-
   <div class="wire left"></div>
 
   <div class="bands-left">
@@ -147,7 +152,6 @@ table td, table th{
   <div class="band last" data-i="4"></div>
 
   <div class="wire right"></div>
-
 </div>
 
 <div class="result" id="res5out"></div>
@@ -160,7 +164,6 @@ table td, table th{
 <img src="rezystor4paski.png">
 
 <div class="resistor" id="res4">
-
   <div class="wire left"></div>
 
   <div class="bands-left">
@@ -172,7 +175,6 @@ table td, table th{
   <div class="band last" data-i="3"></div>
 
   <div class="wire right"></div>
-
 </div>
 
 <div class="result" id="res4out"></div>
@@ -241,8 +243,8 @@ function draw5(){
 
   let val=(b5[0]*100+b5[1]*10+b5[2])*b5[3];
 
-  document.getElementById('res5out').innerText =
-    `Rezystancja: ${format(val)} ±${b5[4]}%`;
+  document.getElementById('res5out').innerHTML =
+    `<b>Rezystancja:</b> ${format(val)}<br><b>Tolerancja:</b> ±${b5[4]}%`;
 }
 
 function draw4(){
@@ -253,8 +255,8 @@ function draw4(){
 
   let val=(b4[0]*10+b4[1])*b4[2];
 
-  document.getElementById('res4out').innerText =
-    `Rezystancja: ${format(val)} ±${b4[3]}%`;
+  document.getElementById('res4out').innerHTML =
+    `<b>Rezystancja:</b> ${format(val)}<br><b>Tolerancja:</b> ±${b4[3]}%`;
 }
 
 function openMenu(target,index,type){
@@ -299,6 +301,29 @@ draw5();
 draw4();
 
 </script>
+
+<!-- ===== TABELA ===== -->
+
+<h2>Tabela kodów rezystorów</h2>
+
+<table>
+<tr>
+<th>Kolor</th><th>Cyfra</th><th>Mnożnik</th><th>Tolerancja</th>
+</tr>
+
+<tr style="background:black;color:white;"><td>Czarny</td><td>0</td><td>1Ω</td><td>-</td></tr>
+<tr style="background:brown;color:white;"><td>Brązowy</td><td>1</td><td>10Ω</td><td>±1%</td></tr>
+<tr style="background:red;"><td>Czerwony</td><td>2</td><td>100Ω</td><td>±2%</td></tr>
+<tr style="background:orange;"><td>Pomarańczowy</td><td>3</td><td>1kΩ</td><td>-</td></tr>
+<tr style="background:yellow;"><td>Żółty</td><td>4</td><td>10kΩ</td><td>-</td></tr>
+<tr style="background:green;"><td>Zielony</td><td>5</td><td>100kΩ</td><td>-</td></tr>
+<tr style="background:blue;color:white;"><td>Niebieski</td><td>6</td><td>1MΩ</td><td>-</td></tr>
+<tr style="background:purple;color:white;"><td>Fioletowy</td><td>7</td><td>10MΩ</td><td>-</td></tr>
+<tr style="background:gray;"><td>Szary</td><td>8</td><td>100MΩ</td><td>-</td></tr>
+<tr style="background:white;"><td>Biały</td><td>9</td><td>1GΩ</td><td>-</td></tr>
+<tr style="background:gold;"><td>Złoty</td><td>-</td><td>0.1Ω</td><td>±5%</td></tr>
+<tr style="background:silver;"><td>Srebrny</td><td>-</td><td>0.01Ω</td><td>±10%</td></tr>
+</table>
 
 </body>
 </html>
