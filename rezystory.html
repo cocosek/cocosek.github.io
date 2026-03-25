@@ -12,12 +12,12 @@ body{
   text-align:center;
 }
 
-/* 🔥 POPRAWIONY CONTAINER */
+/* CONTAINER */
 .container{
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
-    gap:60px;
+    gap:120px; /* 🔥 większy odstęp */
     margin-top:30px;
 }
 
@@ -26,12 +26,12 @@ body{
   background:#3d4b4b;
   padding:20px;
   border-radius:15px;
-  width:420px;
+  width:380px;
 }
 
 /* OBRAZKI */
 img{
-  width:300px;
+  width:260px;
   margin:10px;
   border-radius:10px;
   box-shadow:0 0 15px black;
@@ -40,7 +40,7 @@ img{
 /* REZYSTOR */
 .resistor{
     width:100%;
-    max-width:500px;
+    max-width:360px; /* 🔥 mniejszy */
     height:120px;
     background:#d9c69a;
     border-radius:30px;
@@ -48,8 +48,7 @@ img{
     display:flex;
     align-items:center;
     position:relative;
-    padding:0 40px;
-    overflow:hidden;
+    padding:0 30px;
 }
 
 /* LEWE PASKI */
@@ -58,29 +57,31 @@ img{
     gap:10px;
 }
 
+/* DRUTY */
 .wire{
-  width:80px; /* krótsze */
+  width:50px; /* 🔥 krótsze */
   height:6px;
   background:black;
   position:absolute;
   top:50%;
+  transform:translateY(-50%);
 }
 
-.wire.left{ left:-100px; }
-.wire.right{
-  right:-80px; 
-}
+.wire.left{ left:-60px; }
+.wire.right{ right:-60px; }
+
 /* PASEK */
 .band{
-    width:20px;
+    width:18px;
     height:90px;
     border:2px solid black;
     cursor:pointer;
 }
 
 .band.last{
-    margin-left:auto;   /* 🔥 wypycha na koniec */
+    margin-left:auto;
 }
+
 /* DROPDOWN */
 .dropdown{
   position:absolute;
@@ -105,7 +106,7 @@ img{
   margin-top:10px;
 }
 
-/* 🔥 TABELA POD NAPISEM */
+/* TABELA */
 table{
   margin:20px auto;
   border-collapse:collapse;
@@ -143,7 +144,6 @@ table td, table th{
     <div class="band" data-i="3"></div>
   </div>
 
-  <!-- OSTATNI -->
   <div class="band last" data-i="4"></div>
 
   <div class="wire right"></div>
@@ -169,7 +169,6 @@ table td, table th{
     <div class="band" data-i="2"></div>
   </div>
 
-  <!-- OSTATNI -->
   <div class="band last" data-i="3"></div>
 
   <div class="wire right"></div>
@@ -300,27 +299,6 @@ draw5();
 draw4();
 
 </script>
-
-<h2>Tabela kodów rezystorów</h2>
-
-<table>
-<tr>
-<th>Kolor</th><th>1</th><th>2</th><th>3</th><th>Mnożnik</th><th>Tolerancja</th>
-</tr>
-
-<tr style="background:black;color:white;"><td>Czarny</td><td>0</td><td>0</td><td>0</td><td>1Ω</td><td>-</td></tr>
-<tr style="background:brown;color:white;"><td>Brązowy</td><td>1</td><td>1</td><td>1</td><td>10Ω</td><td>±1%</td></tr>
-<tr style="background:red;"><td>Czerwony</td><td>2</td><td>2</td><td>2</td><td>100Ω</td><td>±2%</td></tr>
-<tr style="background:orange;"><td>Pomarańczowy</td><td>3</td><td>3</td><td>3</td><td>1kΩ</td><td>-</td></tr>
-<tr style="background:yellow;"><td>Żółty</td><td>4</td><td>4</td><td>4</td><td>10kΩ</td><td>-</td></tr>
-<tr style="background:green;"><td>Zielony</td><td>5</td><td>5</td><td>5</td><td>100kΩ</td><td>-</td></tr>
-<tr style="background:blue;color:white;"><td>Niebieski</td><td>6</td><td>6</td><td>6</td><td>1MΩ</td><td>-</td></tr>
-<tr style="background:purple;color:white;"><td>Fioletowy</td><td>7</td><td>7</td><td>7</td><td>10MΩ</td><td>-</td></tr>
-<tr style="background:gray;"><td>Szary</td><td>8</td><td>8</td><td>8</td><td>100MΩ</td><td>-</td></tr>
-<tr style="background:white;"><td>Biały</td><td>9</td><td>9</td><td>9</td><td>1GΩ</td><td>-</td></tr>
-<tr style="background:gold;"><td>Złoty</td><td>-</td><td>-</td><td>-</td><td>0.1Ω</td><td>±5%</td></tr>
-<tr style="background:silver;"><td>Srebrny</td><td>-</td><td>-</td><td>-</td><td>0.01Ω</td><td>±10%</td></tr>
-</table>
 
 </body>
 </html>
