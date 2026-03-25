@@ -48,7 +48,7 @@ img{
     display:flex;
     align-items:center;
     position:relative;
-    padding:0 20px;
+    padding:0 40px;
 }
 
 /* LEWE PASKI */
@@ -57,16 +57,16 @@ img{
     gap:10px;
 }
 
-/* DRUTY */
 .wire{
-  width:120px;
+  width:80px; /* krótsze */
   height:6px;
   background:black;
   position:absolute;
   top:50%;
 }
-.wire.left{ left:-120px; }
-.wire.right{ right:-120px; }
+
+.wire.left{ left:-80px; }
+.wire.right{ right:-80px; }
 
 /* PASEK */
 .band{
@@ -76,11 +76,9 @@ img{
     cursor:pointer;
 }
 
-/* 🔥 NAJWAŻNIEJSZE – OSTATNI PASEK */
 .band.last{
-    margin-left:40px; /* odstęp od reszty */
+    margin-left:auto;   /* 🔥 wypycha na koniec */
 }
-
 /* DROPDOWN */
 .dropdown{
   position:absolute;
