@@ -3,19 +3,31 @@
 <head>
     <meta charset="UTF-8"/>
     <title>BMI</title>
+
     <link href="style.css" rel="stylesheet"/>
     <script src="funkcje.js"></script>
+
+    <!-- preload obrazków -->
+    <link rel="preload" as="image" href="skala.png">
+    <link rel="preload" as="image" href="strzalka.png">
+    <link rel="preload" as="image" href="niedowaga.png">
+    <link rel="preload" as="image" href="prawidlowa.png">
+    <link rel="preload" as="image" href="nadwaga.png">
+    <link rel="preload" as="image" href="otylosc.png">
+    <link rel="preload" as="image" href="otylosc_skrajna.png">
 </head>
 
 <body>
 <div id="container"> 
     <h2>BMI - Kalkulator</h2>
 
+    <!-- SKALA + STRZAŁKA -->
     <div class="kontener-obrazow">
-        <img src="skala.png" class="obraz-bazowy">
-        <img src="strzalka.png" id="strzalka" class="obraz-nad">
+        <img src="skala.png" class="obraz-bazowy" alt="Skala BMI">
+        <img src="strzalka.png" id="strzalka" class="obraz-nad" alt="Strzałka BMI">
     </div>
 
+    <!-- FORMULARZ -->
     <div class="formularz">
         <input type="text" id="imie" placeholder="Imię"><br>
         <input type="text" id="nazwisko" placeholder="Nazwisko"><br>
@@ -26,11 +38,14 @@
         <button onclick="oblicz()">Oblicz BMI</button>
     </div>
 
+    <!-- WYNIKI -->
     <p id="bmi"></p>
     <p id="opis"></p>
 
+    <!-- FIGURA -->
     <div class="wynik">
-        <img id="figura" src="" alt="">
+        <!-- domyślny obraz -->
+        <img id="figura" src="prawidlowa.png" alt="Figura BMI">
     </div>
 
 </div>
