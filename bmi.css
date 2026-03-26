@@ -1,0 +1,48 @@
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #f5f5f5;
+}
+
+#container {
+    width: 300px;
+    margin: auto;
+}
+
+.formularz input {
+    margin: 5px;
+    padding: 5px;
+    width: 80%;
+}
+
+button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: navy;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.kontener-obrazow {
+    position: relative;
+    margin: 20px 0;
+}
+
+.obraz-bazowy {
+    width: 200px;
+}
+
+.obraz-nad {
+    position: absolute;
+    top: 60px;
+    left: 85px;
+    width: 40px;
+    transform-origin: center center;
+    transition: 1s;
+}
+
+.wynik img {
+    margin-top: 20px;
+    width: 120px;
+}
