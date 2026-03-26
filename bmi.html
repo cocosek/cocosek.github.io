@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>BMI</title>
+    <link href="style.css" rel="stylesheet"/>
+    <script src="funkcje.js"></script>
+</head>
+
+<body>
+<div id="container"> 
+    <h2>BMI - Kalkulator</h2>
+
+    <div class="kontener-obrazow">
+        <img src="skala.png" class="obraz-bazowy">
+        <img src="strzalka.png" id="strzalka" class="obraz-nad">
+    </div>
+
+    <div class="formularz">
+        <input type="text" id="imie" placeholder="Imię"><br>
+        <input type="text" id="nazwisko" placeholder="Nazwisko"><br>
+        <input type="number" id="wiek" placeholder="Wiek"><br>
+        <input type="number" id="wzrost" placeholder="Wzrost (cm)"><br>
+        <input type="number" id="waga" placeholder="Waga (kg)"><br>
+
+        <button onclick="oblicz()">Oblicz BMI</button>
+    </div>
+
+    <p id="bmi"></p>
+    <p id="opis"></p>
+
+    <div class="wynik">
+        <img id="figura" src="" alt="">
+    </div>
+
+</div>
+</body>
+</html>
