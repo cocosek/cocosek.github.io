@@ -2,52 +2,165 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>BMI</title>
+    <title>BMI - Kalkulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
 
-    <link href="style.css" rel="stylesheet"/>
-    <script src="funkcje.js"></script>
+        #container {
+            width: 300px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
 
-    <!-- preload obrazków -->
-    <link rel="preload" as="image" href="skala.png">
-    <link rel="preload" as="image" href="strzalka.png">
-    <link rel="preload" as="image" href="niedowaga.png">
-    <link rel="preload" as="image" href="prawidlowa.png">
-    <link rel="preload" as="image" href="nadwaga.png">
-    <link rel="preload" as="image" href="otylosc.png">
-    <link rel="preload" as="image" href="otylosc_skrajna.png">
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .formularz input {
+            margin: 5px 0;
+            padding: 8px;
+            width: 90%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: navy;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: darkblue;
+        }
+
+        .kontener-obrazow {
+            position: relative;
+            margin: 20px 0;
+            height: 100px;
+        }
+
+        .obraz-bazowy {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .obraz-nad {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            width: 40px;
+            transform-origin: center center;
+            transition: transform 1s;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        #bmi, #opis {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .wynik img {
+            margin-top: 15px;
+            width: 120px;
+        }
+    </style>
+    <script>
+        function oblicz() {
+            let wzrost = parseFloat(document.getElementById("wzrost").value);
+            let waga = parseFloat(document.getElementById("waga").value);
+            let bmiText = document.getElementById("bmi");
+            let opisText = document.getElementById("opis");
+            let figura = document.getElementById("figura");
+            let strzalka = document.getElementById("strzalka");
+
+            if (isNaN(wzrost) || isNaN(waga) || wzrost <= 0 || waga <= 0) {
+                alert("Proszę wprowadzić poprawne wartości wagi i wzrostu.");
+                return;
+            }
+
+            let wzrostM = wzrost / 100;
+            let bmi = waga / (wzrostM * wzrostM);
+            bmi = Math.round(bmi * 10) / 10;
+
+            bmiText.textContent = "Twoje BMI: " + bmi;
+
+            let opis = "";
+            let obraz = "prawidlowa.png";
+            let kat = 0;
+
+            if (bmi < 18.5) {
+                opis = "Niedowaga";
+                obraz = "niedowaga.png";
+                kat = -45;
+            } else if (bmi < 25) {
+                opis = "Prawidłowa waga";
+                obraz = "prawidlowa.png";
+                kat = -10;
+            } else if (bmi < 30) {
+                opis = "Nadwaga";
+                obraz = "nadwaga.png";
+                kat = 20;
+            } else if (bmi < 35) {
+                opis = "Otyłość";
+                obraz = "otylosc.png";
+                kat = 45;
+            } else {
+                opis = "Otyłość skrajna";
+                obraz = "otylosc_skrajna.png";
+                kat = 70;
+            }
+
+            opisText.textContent = opis;
+            figura.src = obraz;
+            strzalka.style.transform = "translateX(-50%) rotate(" + kat + "deg)";
+        }
+    </script>
 </head>
-
 <body>
-<div id="container"> 
-    <h2>BMI - Kalkulator</h2>
+    <div id="container"> 
+        <h2>BMI - Kalkulator</h2>
 
-    <!-- SKALA + STRZAŁKA -->
-    <div class="kontener-obrazow">
-        <img src="skala.png" class="obraz-bazowy" alt="Skala BMI">
-        <img src="strzalka.png" id="strzalka" class="obraz-nad" alt="Strzałka BMI">
+        <!-- SKALA + STRZAŁKA -->
+        <div class="kontener-obrazow">
+            <img src="skala.png" class="obraz-bazowy" alt="Skala BMI">
+            <img src="strzalka.png" id="strzalka" class="obraz-nad" alt="Strzałka BMI">
+        </div>
+
+        <!-- FORMULARZ -->
+        <div class="formularz">
+            <input type="text" id="imie" placeholder="Imię"><br>
+            <input type="text" id="nazwisko" placeholder="Nazwisko"><br>
+            <input type="number" id="wiek" placeholder="Wiek"><br>
+            <input type="number" id="wzrost" placeholder="Wzrost (cm)"><br>
+            <input type="number" id="waga" placeholder="Waga (kg)"><br>
+
+            <button onclick="oblicz()">Oblicz BMI</button>
+        </div>
+
+        <!-- WYNIKI -->
+        <p id="bmi"></p>
+        <p id="opis"></p>
+
+        <!-- FIGURA -->
+        <div class="wynik">
+            <img id="figura" src="prawidlowa.png" alt="Figura BMI">
+        </div>
     </div>
-
-    <!-- FORMULARZ -->
-    <div class="formularz">
-        <input type="text" id="imie" placeholder="Imię"><br>
-        <input type="text" id="nazwisko" placeholder="Nazwisko"><br>
-        <input type="number" id="wiek" placeholder="Wiek"><br>
-        <input type="number" id="wzrost" placeholder="Wzrost (cm)"><br>
-        <input type="number" id="waga" placeholder="Waga (kg)"><br>
-
-        <button onclick="oblicz()">Oblicz BMI</button>
-    </div>
-
-    <!-- WYNIKI -->
-    <p id="bmi"></p>
-    <p id="opis"></p>
-
-    <!-- FIGURA -->
-    <div class="wynik">
-        <!-- domyślny obraz -->
-        <img id="figura" src="prawidlowa.png" alt="Figura BMI">
-    </div>
-
-</div>
 </body>
 </html>
