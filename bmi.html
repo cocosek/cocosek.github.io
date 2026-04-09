@@ -21,17 +21,11 @@
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
 
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        /* Sekcja ze skalą */
         .kontener-obrazow {
             position: relative;
             margin: 20px auto;
-            width: 300px; /* szerokość skali */
-            height: 160px; /* wysokość dopasowana do półkola */
+            width: 300px; 
+            height: 160px;
             overflow: hidden;
         }
 
@@ -42,13 +36,12 @@
 
         #strzalka {
             position: absolute;
-            bottom: 5px; /* strzałka zaczyna się u dołu skali */
+            bottom: 5px;
             left: 50%;
             width: 40px;
-            /* KLUCZOWE: punkt obrotu na dole grafiki strzałki */
             transform-origin: bottom center; 
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateX(-50%) rotate(-90deg); /* pozycja startowa */
+            transform: translateX(-50%) rotate(-90deg);
         }
 
         .formularz input {
@@ -58,7 +51,6 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             box-sizing: border-box;
-            font-size: 16px;
         }
 
         button {
@@ -69,26 +61,13 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
             width: 100%;
-            transition: 0.3s;
         }
 
-        button:hover {
-            background: #002244;
-        }
-
-        #wynik-sekcja {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-
-        #bmi { font-size: 22px; color: #003366; margin: 5px 0; }
-        #opis { font-size: 18px; color: #555; margin: 5px 0; }
+        #bmi { font-size: 22px; font-weight: bold; color: #003366; margin: 15px 0 5px; }
+        #opis { font-size: 18px; color: #555; margin: 0 0 15px; }
 
         .wynik-figura img {
-            margin-top: 20px;
             height: 180px;
         }
     </style>
@@ -98,26 +77,22 @@
 <div id="container"> 
     <h2>Kalkulator BMI</h2>
 
-    <!-- Grafika Skali i Strzałki -->
     <div class="kontener-obrazow">
-        <img src="custom bmi.png" class="obraz-bazowy" alt="Skala BMI">
+        <img src="custom bmi.png" class="obraz-bazowy" alt="Skala">
         <img src="strzalka.png" id="strzalka" alt="Wskaźnik">
     </div>
 
-    <!-- Formularz wprowadzania danych -->
     <div class="formularz">
-        <input type="number" id="wzrost" placeholder="Wzrost (cm)" step="1">
-        <input type="number" id="waga" placeholder="Waga (kg)" step="0.1">
+        <input type="number" id="wzrost" placeholder="Wzrost (cm)">
+        <input type="number" id="waga" placeholder="Waga (kg)">
         <button onclick="oblicz()">OBLICZ WYNIK</button>
     </div>
 
-    <!-- Sekcja Wyników -->
     <div id="wynik-sekcja">
-        <p id="bmi">Wprowadź dane...</p>
+        <p id="bmi"></p>
         <p id="opis"></p>
-        
         <div class="wynik-figura">
-            <img id="figura" src="prawidlowa.png" style="display:none;" alt="Sylwetka">
+            <img id="figura" src="prawidlowa.png" style="display:none;">
         </div>
     </div>
 </div>
@@ -131,13 +106,9 @@
         let figura = document.getElementById("figura");
         let strzalka = document.getElementById("strzalka");
 
-        if (!wzrost || !waga || wzrost <= 0 || waga <= 0) {
-            alert("Proszę podać prawidłowy wzrost i wagę.");
-            return;
-        }
+        if (!wzrost || !waga) return;
 
-        let wzrostM = wzrost / 100;
-        let bmi = waga / (wzrostM * wzrostM);
+        let bmi = waga / Math.pow(wzrost/100, 2);
         bmi = Math.round(bmi * 10) / 10;
 
         bmiText.textContent = "Twoje BMI: " + bmi;
@@ -147,46 +118,40 @@
         let obraz = "prawidlowa.png";
         let kat = 0;
 
-        // Logika dopasowana do 8 przedziałów na obrazku custom bmi.png
-        // Kąty ustawione tak, by strzałka celowała w środek każdego koloru
+        // POPRAWIONA LOGIKA DOPASOWANA DO GRAFIKI
         if (bmi <= 15) {
-            opis = "Wygłodzenie";
-            obraz = "niedowaga.png";
+            opis = "Wygłodzony";
             kat = -78;
         } else if (bmi <= 17.4) {
-            opis = "Wychudzenie";
-            obraz = "niedowaga.png";
+            opis = "Wychudzony";
             kat = -56;
         } else if (bmi <= 18.5) {
             opis = "Niedowaga";
-            obraz = "niedowaga.png";
             kat = -34;
         } else if (bmi <= 24.9) {
-            opis = "Waga prawidłowa";
-            obraz = "prawidlowa.png";
+            opis = "Prawidłowy";
             kat = -12;
+            obraz = "prawidlowa.png";
         } else if (bmi <= 29.9) {
             opis = "Nadwaga";
-            obraz = "nadwaga.png";
             kat = 12;
+            obraz = "nadwaga.png";
         } else if (bmi <= 34.9) {
-            opis = "I stopień otyłości";
-            obraz = "otylosc.png";
+            opis = "1 stopień otyłości";
             kat = 34;
-        } else if (bmi <= 39.9) {
-            opis = "II stopień otyłości";
             obraz = "otylosc.png";
+        } else if (bmi <= 39.9) {
+            opis = "2 stopień otyłości";
             kat = 56;
+            obraz = "otylosc.png";
         } else {
             opis = "Otyłość skrajna";
-            obraz = "otylosc_skrajna.png";
             kat = 78;
+            obraz = "otylosc_skrajna.png";
         }
 
         opisText.textContent = opis;
         figura.src = obraz;
-        
-        // Wykonanie obrotu (translateX utrzymuje wyśrodkowanie)
         strzalka.style.transform = "translateX(-50%) rotate(" + kat + "deg)";
     }
 </script>
