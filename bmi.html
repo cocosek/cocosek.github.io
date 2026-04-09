@@ -1,187 +1,160 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8""")/>>
     <title>BMI - Kalkulator</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
-            background: #f0f4f8;
+            background: #f5f5f5;
             margin: 0;
             padding: 20px;
         }
 
         #container {
-            width: 450px;
-            margin: 20px auto;
+            width: 350px;
+            margin: auto;
             background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
 
-        /* Kontener dla nowej skali */
         .kontener-obrazow {
             position: relative;
-            margin: 10px auto 30px;
-            width: 350px; 
-            height: 180px;
-            overflow: hidden;
+            margin: 20px 0;
+            height: 150px; /* dopasowane do półkola */
         }
 
         .obraz-bazowy {
             width: 100%;
-            display: block;
+            max-width: 300px;
         }
 
         #strzalka {
             position: absolute;
-            bottom: 10px; /* Pozycja dolnej części strzałki na skali */
+            bottom: 10px; /* ustawienie u podstawy skali */
             left: 50%;
-            width: 45px; /* Dopasuj do szerokości Twojego pliku strzalka.png */
-            
-            /* KLUCZOWE: Punkt obrotu na samym dole grafiki strzałki */
-            transform-origin: bottom center; 
-            
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 40px;
+            transform-origin: bottom center; /* obrót u podstawy strzałki */
+            transition: transform 1s;
             transform: translateX(-50%) rotate(-90deg);
         }
 
-        .formularz {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
         .formularz input {
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            font-size: 16px;
+            margin: 5px 0;
+            padding: 8px;
+            width: 90%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
 
         button {
-            padding: 12px;
-            background: #004a99;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: navy;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
+            width: 90%;
+        }
+
+        #bmi, #opis {
+            margin: 10px 0;
             font-weight: bold;
-            font-size: 16px;
-            transition: background 0.3s;
         }
 
-        button:hover {
-            background: #003366;
-        }
-
-        #wynik-sekcja {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px dashed #e9ecef;
-        }
-
-        #bmi { font-size: 26px; font-weight: bold; color: #004a99; margin-bottom: 5px; }
-        #opis { font-size: 19px; color: #495057; font-weight: 500; }
-
-        .wynik-figura img {
-            margin-top: 20px;
-            height: 220px;
-            object-fit: contain;
+        .wynik img {
+            margin-top: 15px;
+            height: 200px;
         }
     </style>
+    <script>
+        function oblicz() {
+            let wzrost = parseFloat(document.getElementById("wzrost").value);
+            let waga = parseFloat(document.getElementById("waga").value);
+            let bmiText = document.getElementById("bmi");
+            let opisText = document.getElementById("opis");
+            let figura = document.getElementById("figura");
+            let strzalka = document.getElementById("strzalka");
+
+            if (!wzrost || !waga || wzrost <= 0 || waga <= 0) {
+                alert("Proszę wprowadzić poprawne wartości.");
+                return;
+            }
+
+            let wzrostM = wzrost / 100;
+            let bmi = waga / (wzrostM * wzrostM);
+            bmi = Math.round(bmi * 10) / 10;
+
+            bmiText.textContent = "Twoje BMI: " + bmi;
+
+            let opis = "";
+            let obraz = "prawidlowa.png";
+            let kat = 0;
+
+            // Logika i kąty dopasowane do 8 kolorów na custom bmi.png
+            if (bmi <= 15) {
+                opis = "wygłodzony";
+                kat = -78;
+            } else if (bmi <= 17.4) {
+                opis = "wychudzony";
+                kat = -56;
+            } else if (bmi <= 18.5) {
+                opis = "niedowagę";
+                kat = -34;
+            } else if (bmi <= 24.9) {
+                opis = "prawidłowy";
+                kat = -12;
+                obraz = "prawidlowa.png";
+            } else if (bmi <= 29.9) {
+                opis = "nadwagę";
+                kat = 12; // Żółty segment
+                obraz = "nadwaga.png";
+            } else if (bmi <= 34.9) {
+                opis = "1 stopień otyłości";
+                kat = 34; // Jasnopomarańczowy
+                obraz = "otylosc.png";
+            } else if (bmi <= 39.9) {
+                opis = "2 stopień otyłości";
+                kat = 56; // Ciemnopomarańczowy
+                obraz = "otylosc.png";
+            } else {
+                opis = "otyłość skrajną";
+                kat = 78; // Czerwony
+                obraz = "otylosc_skrajna.png";
+            }
+
+            opisText.textContent = "Pacjent ma " + opis + " wskaźnik masy ciała";
+            figura.src = obraz;
+            strzalka.style.transform = "translateX(-50%) rotate(" + kat + "deg)";
+        }
+    </script>
 </head>
 <body>
+    <div id="container"> 
+        <h2>BMI - Kalkulator</h2>
 
-<div id="container"> 
-    <h2>Kalkulator BMI</h2>
+        <div class="kontener-obrazow">
+            <img src="custom bmi.png" class="obraz-bazowy" alt="Skala BMI">
+            <img src="strzalka.png" id="strzalka" alt="Strzałka">
+        </div>
 
-    <!-- Skala custom bmi.png -->
-    <div class="kontener-obrazow">
-        <img src="custom bmi.png" class="obraz-bazowy" alt="Skala BMI">
-        <img src="strzalka.png" id="strzalka" alt="Wskazówka">
-    </div>
+        <div class="formularz">
+            <input type="number" id="wzrost" placeholder="Wzrost (cm)">
+            <input type="number" id="waga" placeholder="Waga (kg)">
+            <button onclick="oblicz()">Oblicz BMI</button>
+        </div>
 
-    <div class="formularz">
-        <input type="number" id="wzrost" placeholder="Wzrost (cm)">
-        <input type="number" id="waga" placeholder="Waga (kg)">
-        <button onclick="oblicz()">OBLICZ WYNIK</button>
-    </div>
-
-    <div id="wynik-sekcja">
         <p id="bmi"></p>
         <p id="opis"></p>
-        <div class="wynik-figura">
-            <img id="figura" src="prawidlowa.png" style="display:none;">
+
+        <div class="wynik">
+            <img id="figura" src="prawidlowa.png" alt="Figura BMI">
         </div>
     </div>
-</div>
-
-<script>
-    function oblicz() {
-        let wzrost = parseFloat(document.getElementById("wzrost").value);
-        let waga = parseFloat(document.getElementById("waga").value);
-        let bmiText = document.getElementById("bmi");
-        let opisText = document.getElementById("opis");
-        let figura = document.getElementById("figura");
-        let strzalka = document.getElementById("strzalka");
-
-        if (!wzrost || !waga) return;
-
-        let bmi = waga / Math.pow(wzrost/100, 2);
-        bmi = Math.round(bmi * 10) / 10;
-
-        bmiText.textContent = "Twoje BMI: " + bmi;
-        figura.style.display = "inline-block";
-
-        let opis = "";
-        let obraz = "prawidlowa.png";
-        let kat = 0;
-
-        // POPRAWIONA LOGIKA I KĄTY DLA 8 SEGMENTÓW
-        if (bmi <= 15) {
-            opis = "wygłodzony";
-            kat = -78;
-        } else if (bmi <= 17.4) {
-            opis = "wychudzony";
-            kat = -56;
-        } else if (bmi <= 18.5) {
-            opis = "niedowagę";
-            kat = -34;
-        } else if (bmi <= 24.9) {
-            opis = "prawidłowy";
-            kat = -12;
-            obraz = "prawidlowa.png";
-        } else if (bmi <= 29.9) {
-            opis = "nadwagę";
-            kat = 11;
-            obraz = "nadwaga.png";
-        } else if (bmi <= 34.9) {
-            opis = "1 stopień otyłości";
-            kat = 33;
-            obraz = "otylosc.png";
-        } else if (bmi <= 39.9) {
-            opis = "2 stopień otyłości";
-            kat = 56;
-            obraz = "otylosc.png";
-        } else {
-            opis = "otyłość skrajną";
-            kat = 78;
-            obraz = "otylosc_skrajna.png";
-        }
-
-        // Dodanie wymaganej frazy
-        opisText.textContent = "Pacjent ma " + opis + " wskaźnik masy ciała";
-        
-        figura.src = obraz;
-        // Obrót strzałki
-        strzalka.style.transform = "translateX(-50%) rotate(" + kat + "deg)";
-    }
-</script>
-
 </body>
 </html>
