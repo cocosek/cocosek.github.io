@@ -8,7 +8,6 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background: #f5f5f5;
-            margin: 0;
             padding: 20px;
         }
 
@@ -25,8 +24,7 @@
             position: relative;
             margin: 20px auto;
             width: 300px; 
-            height: 160px;
-            overflow: hidden;
+            height: 150px; /* Wysokość połowy koła */
         }
 
         .obraz-bazowy {
@@ -36,40 +34,44 @@
 
         #strzalka {
             position: absolute;
-            bottom: 5px;
+            /* Pozycjonowanie na dole na środku skali */
+            bottom: 5px; 
             left: 50%;
-            width: 40px;
+            width: 6px; /* Szerokość samej igły */
+            height: 80px; /* Długość igły */
+            background: black; /* Jeśli nie masz pliku, to będzie linia */
+            
+            /* KLUCZOWE: Obrot wokół dolnej krawędzi igły */
             transform-origin: bottom center; 
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            
+            transition: transform 0.8s ease-out;
+            /* Startuje z lewej strony (-90 stopni) */
             transform: translateX(-50%) rotate(-90deg);
         }
 
+        /* Stylizacja formularza */
         .formularz input {
             margin: 8px 0;
             padding: 10px;
-            width: 100%;
+            width: 90%;
             border: 1px solid #ddd;
             border-radius: 5px;
-            box-sizing: border-box;
         }
 
         button {
             margin-top: 15px;
-            padding: 12px 25px;
+            padding: 12px;
             background: #003366;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            width: 95%;
         }
 
-        #bmi { font-size: 22px; font-weight: bold; color: #003366; margin: 15px 0 5px; }
-        #opis { font-size: 18px; color: #555; margin: 0 0 15px; }
-
-        .wynik-figura img {
-            height: 180px;
-        }
+        #bmi { font-size: 24px; font-weight: bold; margin: 15px 0 5px; }
+        #opis { font-size: 18px; margin-bottom: 15px; }
+        .figura-img { height: 200px; }
     </style>
 </head>
 <body>
@@ -79,21 +81,20 @@
 
     <div class="kontener-obrazow">
         <img src="custom bmi.png" class="obraz-bazowy" alt="Skala">
-        <img src="strzalka.png" id="strzalka" alt="Wskaźnik">
+        <!-- Jeśli masz plik strzalka.png, zamień <div> na <img> i usuń background w CSS -->
+        <img src="strzalka.png" id="strzalka" alt="Wskazówka">
     </div>
 
     <div class="formularz">
         <input type="number" id="wzrost" placeholder="Wzrost (cm)">
         <input type="number" id="waga" placeholder="Waga (kg)">
-        <button onclick="oblicz()">OBLICZ WYNIK</button>
+        <button onclick="oblicz()">OBLICZ BMI</button>
     </div>
 
     <div id="wynik-sekcja">
         <p id="bmi"></p>
         <p id="opis"></p>
-        <div class="wynik-figura">
-            <img id="figura" src="prawidlowa.png" style="display:none;">
-        </div>
+        <img id="figura" class="figura-img" src="" style="display:none;">
     </div>
 </div>
 
@@ -101,58 +102,58 @@
     function oblicz() {
         let wzrost = parseFloat(document.getElementById("wzrost").value);
         let waga = parseFloat(document.getElementById("waga").value);
-        let bmiText = document.getElementById("bmi");
-        let opisText = document.getElementById("opis");
-        let figura = document.getElementById("figura");
-        let strzalka = document.getElementById("strzalka");
-
+        
         if (!wzrost || !waga) return;
 
         let bmi = waga / Math.pow(wzrost/100, 2);
         bmi = Math.round(bmi * 10) / 10;
 
-        bmiText.textContent = "Twoje BMI: " + bmi;
+        document.getElementById("bmi").textContent = "Twoje BMI: " + bmi;
+        let figura = document.getElementById("figura");
         figura.style.display = "inline-block";
 
         let opis = "";
-        let obraz = "prawidlowa.png";
+        let obraz = "";
         let kat = 0;
 
-        // POPRAWIONA LOGIKA DOPASOWANA DO GRAFIKI
+        // KALIBRACJA KĄTÓW (8 segmentów co ~22.5 stopnia)
+        // Zakres od -90 (lewo) do +90 (prawo)
         if (bmi <= 15) {
             opis = "Wygłodzony";
-            kat = -78;
+            kat = -78; // Środek błękitnego
         } else if (bmi <= 17.4) {
             opis = "Wychudzony";
-            kat = -56;
+            kat = -56; // Środek jasnoniebieskiego
         } else if (bmi <= 18.5) {
             opis = "Niedowaga";
-            kat = -34;
+            kat = -34; // Środek ciemnoniebieskiego
         } else if (bmi <= 24.9) {
             opis = "Prawidłowy";
-            kat = -12;
+            kat = -11; // Środek beżowego
             obraz = "prawidlowa.png";
         } else if (bmi <= 29.9) {
             opis = "Nadwaga";
-            kat = 12;
+            kat = 11; // Środek żółtego
             obraz = "nadwaga.png";
         } else if (bmi <= 34.9) {
             opis = "1 stopień otyłości";
-            kat = 34;
+            kat = 34; // Środek jasnopomarańczowego
             obraz = "otylosc.png";
         } else if (bmi <= 39.9) {
             opis = "2 stopień otyłości";
-            kat = 56;
+            kat = 56; // Środek ciemnopomarańczowego
             obraz = "otylosc.png";
         } else {
             opis = "Otyłość skrajna";
-            kat = 78;
+            kat = 78; // Środek czerwonego
             obraz = "otylosc_skrajna.png";
         }
 
-        opisText.textContent = opis;
-        figura.src = obraz;
-        strzalka.style.transform = "translateX(-50%) rotate(" + kat + "deg)";
+        document.getElementById("opis").textContent = opis;
+        if(obraz) figura.src = obraz;
+        
+        // Zastosowanie obrotu
+        document.getElementById("strzalka").style.transform = "translateX(-50%) rotate(" + kat + "deg)";
     }
 </script>
 
