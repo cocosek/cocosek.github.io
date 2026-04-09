@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8""")/>>
     <title>BMI - Kalkulator</title>
     <style>
         body {
@@ -13,154 +13,183 @@
         }
 
         #container {
-            width: 300px;
+            width: 400px;
             margin: auto;
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
 
         h2 {
             margin-bottom: 20px;
+            color: #333;
         }
 
-        .formularz input {
-            margin: 5px 0;
-            padding: 8px;
-            width: 90%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            margin-top: 10px;
-            padding: 8px 15px;
-            background: navy;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: darkblue;
-        }
-
+        /* Sekcja ze skalą */
         .kontener-obrazow {
             position: relative;
-            margin: 20px 0;
-            height: 100px;
+            margin: 20px auto;
+            width: 300px; /* szerokość skali */
+            height: 160px; /* wysokość dopasowana do półkola */
+            overflow: hidden;
         }
 
         .obraz-bazowy {
             width: 100%;
-            max-width: 200px;
+            display: block;
         }
 
-        .obraz-nad {
+        #strzalka {
             position: absolute;
-            top: 60px;
+            bottom: 5px; /* strzałka zaczyna się u dołu skali */
             left: 50%;
             width: 40px;
-            transform-origin: center center;
-            transition: transform 1s;
-            transform: translateX(-50%) rotate(0deg);
+            /* KLUCZOWE: punkt obrotu na dole grafiki strzałki */
+            transform-origin: bottom center; 
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateX(-50%) rotate(-90deg); /* pozycja startowa */
         }
 
-        #bmi, #opis {
-            margin: 10px 0;
-            font-weight: bold;
+        .formularz input {
+            margin: 8px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
         }
 
-        .wynik img {
+        button {
             margin-top: 15px;
-            width: 120px;
+            padding: 12px 25px;
+            background: #003366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #002244;
+        }
+
+        #wynik-sekcja {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        #bmi { font-size: 22px; color: #003366; margin: 5px 0; }
+        #opis { font-size: 18px; color: #555; margin: 5px 0; }
+
+        .wynik-figura img {
+            margin-top: 20px;
+            height: 180px;
         }
     </style>
-    <script>
-        function oblicz() {
-            let wzrost = parseFloat(document.getElementById("wzrost").value);
-            let waga = parseFloat(document.getElementById("waga").value);
-            let bmiText = document.getElementById("bmi");
-            let opisText = document.getElementById("opis");
-            let figura = document.getElementById("figura");
-            let strzalka = document.getElementById("strzalka");
-
-            if (isNaN(wzrost) || isNaN(waga) || wzrost <= 0 || waga <= 0) {
-                alert("Proszę wprowadzić poprawne wartości wagi i wzrostu.");
-                return;
-            }
-
-            let wzrostM = wzrost / 100;
-            let bmi = waga / (wzrostM * wzrostM);
-            bmi = Math.round(bmi * 10) / 10;
-
-            bmiText.textContent = "Twoje BMI: " + bmi;
-
-            let opis = "";
-            let obraz = "prawidlowa.png";
-            let kat = 0;
-
-            // Kąty dopasowane do Twojej skali
-if (bmi < 18.5) {
-    opis = "Niedowaga";
-    obraz = "niedowaga.png";
-    kat = -80; // bardziej w lewo
-} else if (bmi < 25) {
-    opis = "Prawidłowa waga";
-    obraz = "prawidlowa.png";
-    kat = -25; // przesunięcie w lewo
-} else if (bmi < 30) {
-    opis = "Nadwaga";
-    obraz = "nadwaga.png";
-    kat = 15; // żółty segment
-} else if (bmi < 35) {
-    opis = "Otyłość";
-    obraz = "otylosc.png";
-    kat = 45;
-} else {
-    opis = "Otyłość skrajna";
-    obraz = "otylosc_skrajna.png";
-    kat = 70;
-}
-            opisText.textContent = opis;
-            figura.src = obraz;
-            strzalka.style.transform = "translateX(-50%) rotate(" + kat + "deg)";
-        }
-    </script>
 </head>
 <body>
-    <div id="container"> 
-        <h2>BMI - Kalkulator</h2>
 
-        <!-- SKALA + STRZAŁKA -->
-        <div class="kontener-obrazow">
-            <img src="skala.png" class="obraz-bazowy" alt="Skala BMI">
-            <img src="strzalka.png" id="strzalka" class="obraz-nad" alt="Strzałka BMI">
-        </div>
+<div id="container"> 
+    <h2>Kalkulator BMI</h2>
 
-        <!-- FORMULARZ -->
-        <div class="formularz">
-            <input type="text" id="imie" placeholder="Imię"><br>
-            <input type="text" id="nazwisko" placeholder="Nazwisko"><br>
-            <input type="number" id="wiek" placeholder="Wiek"><br>
-            <input type="number" id="wzrost" placeholder="Wzrost (cm)"><br>
-            <input type="number" id="waga" placeholder="Waga (kg)"><br>
+    <!-- Grafika Skali i Strzałki -->
+    <div class="kontener-obrazow">
+        <img src="custom bmi.png" class="obraz-bazowy" alt="Skala BMI">
+        <img src="strzalka.png" id="strzalka" alt="Wskaźnik">
+    </div>
 
-            <button onclick="oblicz()">Oblicz BMI</button>
-        </div>
+    <!-- Formularz wprowadzania danych -->
+    <div class="formularz">
+        <input type="number" id="wzrost" placeholder="Wzrost (cm)" step="1">
+        <input type="number" id="waga" placeholder="Waga (kg)" step="0.1">
+        <button onclick="oblicz()">OBLICZ WYNIK</button>
+    </div>
 
-        <!-- WYNIKI -->
-        <p id="bmi"></p>
+    <!-- Sekcja Wyników -->
+    <div id="wynik-sekcja">
+        <p id="bmi">Wprowadź dane...</p>
         <p id="opis"></p>
-
-        <!-- FIGURA -->
-        <div class="wynik">
-            <img id="figura" src="prawidlowa.png" alt="Figura BMI">
+        
+        <div class="wynik-figura">
+            <img id="figura" src="prawidlowa.png" style="display:none;" alt="Sylwetka">
         </div>
     </div>
+</div>
+
+<script>
+    function oblicz() {
+        let wzrost = parseFloat(document.getElementById("wzrost").value);
+        let waga = parseFloat(document.getElementById("waga").value);
+        let bmiText = document.getElementById("bmi");
+        let opisText = document.getElementById("opis");
+        let figura = document.getElementById("figura");
+        let strzalka = document.getElementById("strzalka");
+
+        if (!wzrost || !waga || wzrost <= 0 || waga <= 0) {
+            alert("Proszę podać prawidłowy wzrost i wagę.");
+            return;
+        }
+
+        let wzrostM = wzrost / 100;
+        let bmi = waga / (wzrostM * wzrostM);
+        bmi = Math.round(bmi * 10) / 10;
+
+        bmiText.textContent = "Twoje BMI: " + bmi;
+        figura.style.display = "inline-block";
+
+        let opis = "";
+        let obraz = "prawidlowa.png";
+        let kat = 0;
+
+        // Logika dopasowana do 8 przedziałów na obrazku custom bmi.png
+        // Kąty ustawione tak, by strzałka celowała w środek każdego koloru
+        if (bmi <= 15) {
+            opis = "Wygłodzenie";
+            obraz = "niedowaga.png";
+            kat = -78;
+        } else if (bmi <= 17.4) {
+            opis = "Wychudzenie";
+            obraz = "niedowaga.png";
+            kat = -56;
+        } else if (bmi <= 18.5) {
+            opis = "Niedowaga";
+            obraz = "niedowaga.png";
+            kat = -34;
+        } else if (bmi <= 24.9) {
+            opis = "Waga prawidłowa";
+            obraz = "prawidlowa.png";
+            kat = -12;
+        } else if (bmi <= 29.9) {
+            opis = "Nadwaga";
+            obraz = "nadwaga.png";
+            kat = 12;
+        } else if (bmi <= 34.9) {
+            opis = "I stopień otyłości";
+            obraz = "otylosc.png";
+            kat = 34;
+        } else if (bmi <= 39.9) {
+            opis = "II stopień otyłości";
+            obraz = "otylosc.png";
+            kat = 56;
+        } else {
+            opis = "Otyłość skrajna";
+            obraz = "otylosc_skrajna.png";
+            kat = 78;
+        }
+
+        opisText.textContent = opis;
+        figura.src = obraz;
+        
+        // Wykonanie obrotu (translateX utrzymuje wyśrodkowanie)
+        strzalka.style.transform = "translateX(-50%) rotate(" + kat + "deg)";
+    }
+</script>
+
 </body>
 </html>
