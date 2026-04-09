@@ -24,7 +24,7 @@
         .kontener-obrazow {
             position: relative;
             margin: 20px 0;
-            height: 150px; /* dopasowane do półkola */
+            height: 150px;
         }
 
         .obraz-bazowy {
@@ -34,10 +34,10 @@
 
         #strzalka {
             position: absolute;
-            bottom: 10px; /* ustawienie u podstawy skali */
+            bottom: 10px;
             left: 50%;
             width: 40px;
-            transform-origin: bottom center; /* obrót u podstawy strzałki */
+            transform-origin: bottom center;
             transition: transform 1s;
             transform: translateX(-50%) rotate(-90deg);
         }
@@ -93,39 +93,41 @@
             bmiText.textContent = "Twoje BMI: " + bmi;
 
             let opis = "";
-            let obraz = "prawidlowa.png";
+            let obraz = "";
             let kat = 0;
 
-            // Logika i kąty dopasowane do 8 kolorów na custom bmi.png
             if (bmi <= 15) {
                 opis = "wygłodzony";
+                obraz = "niedowaga.png"; // Zmienione na obrazek niedowagi
                 kat = -78;
             } else if (bmi <= 17.4) {
                 opis = "wychudzony";
+                obraz = "niedowaga.png"; // Zmienione na obrazek niedowagi
                 kat = -56;
             } else if (bmi <= 18.5) {
                 opis = "niedowagę";
+                obraz = "niedowaga.png"; // Zmienione na obrazek niedowagi
                 kat = -34;
             } else if (bmi <= 24.9) {
                 opis = "prawidłowy";
-                kat = -12;
                 obraz = "prawidlowa.png";
+                kat = -12;
             } else if (bmi <= 29.9) {
                 opis = "nadwagę";
-                kat = 12; // Żółty segment
                 obraz = "nadwaga.png";
+                kat = 12;
             } else if (bmi <= 34.9) {
                 opis = "1 stopień otyłości";
-                kat = 34; // Jasnopomarańczowy
                 obraz = "otylosc.png";
+                kat = 34;
             } else if (bmi <= 39.9) {
                 opis = "2 stopień otyłości";
-                kat = 56; // Ciemnopomarańczowy
                 obraz = "otylosc.png";
+                kat = 56;
             } else {
                 opis = "otyłość skrajną";
-                kat = 78; // Czerwony
                 obraz = "otylosc_skrajna.png";
+                kat = 78;
             }
 
             opisText.textContent = "Pacjent ma " + opis + " wskaźnik masy ciała";
